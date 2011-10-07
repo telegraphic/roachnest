@@ -1,0 +1,8 @@
+CASPERGUI
+---------
+
+CASPERGUI is a browser based Graphical User Interface (GUI) for control of CASPER hardware.
+It uses bottle.py to serve up web pages, and KATCP to talk to the hardware.
+
+This is still under heavy development. Use at your own risk, and be aware that I've done no 
+security checking (so don't run this on the world wide web).
