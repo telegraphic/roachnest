@@ -1,0 +1,18 @@
+/*
+
+Name:       HIPSR stylesheet 
+Author:     Danny Price
+Version:    v1.0 - "Hipster"
+Modified:   03 Oct 2011
+
+Description: colours and HIPSR branding 
+
+*/
+
+.project_name:before {
+ content: "HIPSR ";
+}
+
+.project_version:after {
+ content: " v1.0";
+}

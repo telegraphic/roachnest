@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+
+<config name="qdr_spec_single">
+    
+  <notes> Config file for QDR spectrometer design. </notes>
+  
+  <register name="fft_shift_coarse" value="1111111111"  base="2" />
+  <register name="fft_shift_fine"   value="11111"       base="2" />
+  <register name="acc_len_coarse"   value="8192"        base="10" />
+  <register name="acc_len_fine"     value="16384"       base="10" />
+  <register name="quant_gain"       value="FF"          base="16" />
+
+</config>

@@ -1,0 +1,78 @@
+.. Stuff documentation master file, created by
+   sphinx-quickstart on Tue Mar 29 17:24:58 2011.
+
+
+CASPERGUI Documentation
+=================================
+Created by Danny Price on 2011-03-30.
+
+Copyright (c) 2011 The University of Oxford. All rights reserved.
+
+
+.. toctree::
+
+
+Introduction
+-------------
+
+Caspergui is a browser based Graphical User Interface (GUI) for control of CASPER hardware.
+This script utilises the KATCP python libraries, the bottle web framework, 
+and sqlite3:
+
+   * http://casper.berkeley.edu/wiki/KATCP
+   * http://bottle.paws.de/
+   * http://docs.python.org/library/sqlite3.html
+
+The HTML/CSS is based on blueprint CSS web framework, and plotting is done with HTML5/javascript flot:
+
+   * http://www.blueprintcss.org/
+   * http://code.google.com/p/flot/
+
+This is still under heavy development, with features being added / removed sporadically. Use at your own risk, and be aware that I've done no security checking (so don't run this on the world wide web).
+
+Usage
+-----
+
+Assuming you've got the dependencies sorted, all you should need to do is run:
+
+.. sourcecode:: python
+
+    >> python caspergui.py <ROACH_NAME or IP> [options]
+
+for example, I've got an entry in my /etc/hosts file for 'junebug', whose IP address is 192.168.126.3. I would
+run:
+
+.. sourcecode:: python
+
+    >> python caspergui.py junebug
+
+This would start up a webserver on localhost:8080, and junebug is set as the roach to send and receive queries from. The options available are:
+
+.. sourcecode:: python
+
+    Options:
+      -h, --help            show this help message and exit
+      -p PORT, --port=PORT  Select KATCP port. Default is 7147
+      -i HOSTIP, --hostip=HOSTIP
+                            change host IP address to run server. Default is
+                            localhost (127.0.0.1)
+      -P HOSTPORT, --hostport=HOSTPORT
+                            change host port for server. Default is 8080
+
+
+        
+.. figure:: picture.jpg
+    :scale: 50%
+    :alt: alternate text
+    :align: center
+    
+    apparently this will show up as a caption
+
+.. automodule:: medInstrument
+    :members:
+
+.. automodule:: craftui
+    :members:
+
+.. automodule:: lolkatcp
+    :members:
