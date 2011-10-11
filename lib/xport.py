@@ -18,7 +18,7 @@ at your own risk.
 
 """
 
-import socket,struct,os,sys
+import socket,struct,os,sys,time
 
 class xportError(Exception):
    """A simple class for X-port error handling"""
@@ -60,17 +60,6 @@ class Xport(object):
       print "OK."
       
       # Flush receiver buffer
-      '''
-      print "FLushing receive buffer ...",
-      self.socket.setblocking(False)
-      try: 
-        raw=self.socket.recv(10)
-      except: 
-        print "\nError: receive buffer flush:\n\t%s\n\t%s"%(sys.exc_info()[0], sys.exc_info()[1])
-        self.is_connected = False
-        raise
-      self.socket.setblocking(True)
-      '''
       self.is_connected = True
       return self.is_connected
       
@@ -82,7 +71,20 @@ class Xport(object):
        return "\nError: cannot connect to port:\n\t%s\n\t%s"%(sys.exc_info()[0], sys.exc_info()[1])
        
      self.is_connected = False
-          
+   
+   def flush(self):
+      """Flush receive buffer"""
+      print "Flushing receive buffer ...",
+      
+      self.socket.setblocking(False)
+      try: 
+        raw=self.socket.recv(10)
+      except: 
+        print "\nError: receive buffer flush:\n\t%s\n\t%s"%(sys.exc_info()[0], sys.exc_info()[1])
+        self.is_connected = False
+        raise
+      self.socket.setblocking(True)
+   
    def write(self,addr,value):
        """Writes a 16bit value to the Fusion part through the Xport."""
        if(not self.is_connected):
@@ -216,7 +218,7 @@ class Xport(object):
      #shutdown_reason=(pwr_state_raw&0x300)>>8
      return 'Power state: %i (%s)'%(pwr_state,pwr_state_decode[pwr_state])
    
-   def get_last_shutdown():
+   def get_last_shutdown(self):
      """Check and retrieve reason for last shutdown. Returns reason as a string"""
      shutdown_reason_decode={0:'Cold start or hard reset', 1: 'Crash', 2:'watchdog overflow', 3: 'User shutdown'}
      try:
@@ -227,15 +229,42 @@ class Xport(object):
      shutdown_reason=(pwr_state_raw&0x300)>>8
      return 'Reason for last shutdown: %i (%s)'%(shutdown_reason,shutdown_reason_decode[shutdown_reason])
 
+   def get_power_good(self):
+     """Check and retrieve power good status of voltage regulators. Returns a list of power good signals."""
+     try:
+       ps_powergds=self.read(0x288)
+     except:
+       return "\nError reading power good:\n\t%s\n\t%s"%(sys.exc_info()[0], sys.exc_info()[1])
+     
+     power_good = []
+     
+     power_good.append(('3v3aux', bool((ps_powergds&0x01)>>00)))
+     power_good.append(('MGT_AVCCPLL', bool((ps_powergds&0x02)>>1)))
+     power_good.append(('MGT_AVTTX', bool((ps_powergds&0x04)>>2)))
+     power_good.append(('MGT_AVCC', bool((ps_powergds&0x08)>>3)))
+     power_good.append(('ATX_PWR', bool((ps_powergds&0x10)>>4)))
+     
+     # Don't really know what the hell this line means, so I've commented it out.
+     #print 'ADC values are averaged %i times.'%(2**(self.read(0x145)))
+     
+     return power_good
 
-   def get_fan_speeds():
-     """TODO"""
-     print '%s: \t%5i rpm'%('Fan 1'.rjust(15),read(0x300)*60)
-     print '%s: \t%5i rpm'%('Fan 2'.rjust(15),read(0x301)*60)
-     print '%s: \t%5i rpm'%('Fan 3'.rjust(15),read(0x302)*60)
+   def get_fan_speeds(self):
+     """Check and retrieve fan speeds. Returns a list of fan speeds"""
+     try:
+      fan1 = self.read(0x300)*60
+      fan2 = self.read(0x301)*60
+      fan3 = self.read(0x302)*60
+     except:
+       return "\nError reading fan speeds:\n\t%s\n\t%s"%(sys.exc_info()[0], sys.exc_info()[1])
+     return ("%i rpm"%fan1, "%i rpm"%fan2, "%i rpm"%fan3)
    
-   def get_channels():
-     """TODO"""
+   def get_channels(self):
+     """Retrieves the voltage and temperatures of the PPC, V5, PSU, and Actel chips. 
+     
+     Returns a list of format:
+     (channel name, channel state, channel min operational value, channel max operational val)
+     """
      channels={  7: '12V ATX (volts)', \
                 10:'5V  ATX (volts)', \
                 13:'3v3 ATX (volts)', \
@@ -247,6 +276,8 @@ class Xport(object):
                 3: 'Virtex5 temp (deg C)', \
                 9: 'PPC  temp (deg C)', \
                 31:'Actl temp (deg C)'}
+                
+     valid_channels = channels.keys()
    
      channel_scale={0: 1600.0, \
                 7: 250.0, \
@@ -286,31 +317,20 @@ class Xport(object):
                       9:-278, \
                       31:-278}
      
-
-     print '\nPower good from onboard voltage regulators:'
-     ps_powergds=read(0x288)
-     print '3v3aux: ',(ps_powergds&0x01)>>0
-     print 'MGT_AVCCPLL: ',(ps_powergds&0x02)>>1
-     print 'MGT_AVTTX: ',(ps_powergds&0x04)>>2
-     print 'MGT_AVCC: ',(ps_powergds&0x08)>>3
-     print 'ATX_PWR: ',(ps_powergds&0x10)>>4
-     
-     print 'ADC values are averaged %i times.'%(2**(read(0x145)))
-     
-     print '\nCurrent values:'
-     print '%s \t%s \t%s \t%s'%('Channel'.rjust(17),'Current'.rjust(10), 'Shutdown'.rjust(10), 'Shutdown'.rjust(10))
-     print '%s \t%s \t%s \t%s'%('Name'.rjust(15),'value'.rjust(8), 'below'.rjust(8), 'above'.rjust(8))
-     print '====================================================================='
+     chan_state = []
      for chan in valid_channels:
-         sample_addr=0x240+chan
-         hard_thresh_min_addr=0x1c0+(chan*2)
-         hard_thresh_max_addr=0x1c0+(chan*2)+1
+         try:
+           sample_addr=0x240+chan
+           hard_thresh_min_addr=0x1c0+(chan*2)
+           hard_thresh_max_addr=0x1c0+(chan*2)+1
          
-         sample=read(sample_addr)/channel_scale[chan] + channel_offset[chan]
-         hard_thresh_min=read(hard_thresh_min_addr)/channel_scale[chan] + channel_offset[chan]
-         hard_thresh_max=read(hard_thresh_max_addr)/channel_scale[chan] + channel_offset[chan]
-         print '%s:\t %7.2f \t%7.2f \t%7.2f'%(channels[chan].rjust(15),sample,hard_thresh_min,hard_thresh_max)
-     
+           sample=self.read(sample_addr)/channel_scale[chan] + channel_offset[chan]
+           hard_thresh_min=self.read(hard_thresh_min_addr)/channel_scale[chan] + channel_offset[chan]
+           hard_thresh_max=self.read(hard_thresh_max_addr)/channel_scale[chan] + channel_offset[chan]
+         except:
+           return "\nError reading channel:\n\t%s\n\t%s"%(sys.exc_info()[0], sys.exc_info()[1]) 
+         chan_state.append((channels[chan].rjust(15),sample,hard_thresh_min,hard_thresh_max))
+     return chan_state
    
 def main():
    # Test of socket connection
@@ -319,11 +339,34 @@ def main():
    print xport
    # Test functionality
    print xport.connect()
-   print xport.power_up()
-   #print xport.power_down()
-   #print xport.warm_rst()
-   #print xport.clear_crashlog()
-   # print xport.get_serial()
-
+   
+   # print('Starting board - POWER TURN ON!')
+   # print xport.power_up()
+   # print('Sleeping...')
+   # time.sleep(5)
+   
+   # Note: I've never tested these...
+   # print xport.warm_rst()
+   # print xport.clear_crashlog()
+   
+   print xport.get_serial()
+   print xport.get_id()
+   print xport.get_board_time()
+   print xport.get_power_state()
+   print xport.get_last_shutdown()
+   print xport.get_fan_speeds()
+   print xport.get_power_good()
+   chans =  xport.get_channels()
+   
+   print '\nCurrent values:'
+   print '%s \t%s \t%s \t%s'%('Channel'.rjust(17),'Current'.rjust(10), 'Shutdown'.rjust(10), 'Shutdown'.rjust(10))
+   print '%s \t%s \t%s \t%s'%('Name'.rjust(15),'value'.rjust(8), 'below'.rjust(8), 'above'.rjust(8))
+   print '====================================================================='   
+   for chan in chans:
+     print '%s:\t %7.2f \t%7.2f \t%7.2f'%(chan[0].rjust(15),chan[1],chan[2],chan[3])
+   
+   # print('shutting down...')
+   # print xport.power_down()
+   
 if __name__ == '__main__':
    main()

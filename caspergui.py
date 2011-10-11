@@ -29,38 +29,121 @@ import lib.katcp_wrapper as katcp_wrapper
 from lib.katcp_helpers import *
 import lib.xport as xport
 
-DIRROOT = os.getcwd() #automatically set root dir to this script's location
+DIRROOT = os.getcwd()   # Automatically set root dir to this script's location
+DB_NAME = 'hardware.db' # Name of the database file
 
 # Static files
 @route('/files/:path#.+#')
 def server_static(path):
+    """URL: *@route('/files/:path#.+#')*"""
     return static_file(path, root=DIRROOT+'/files')
 
 # Force download of files
 @route('/download/:filename')
 def download(filename):
+    """URL: *@route('/download/:filename')*"""
     return static_file(filename, root=DIRROOT+'/files', download=filename)
 
 # Index page
 @route('/')
 @route('/index.html')
 def index():
+    """URL: *@route('/index.html')*"""
     pinglist = ping([roach])
     view = template('index', flashmsgs=0, ping=pinglist, roach=roach)
     return view    
 
+# List hardware page
+@route('/hardware')
+def list_hardware():
+    """URL: *@route('/hardware')* """
+    # Retrieve hardware list from database
+    # Establish database connection
+    dbconnect = sqlite3.connect(DB_NAME)    
+    db = dbconnect.cursor()
+    db.execute("SELECT * FROM hardware")
+    result = db.fetchall()
+    db.close()
+    
+    hardware_list = []
+    hostlist = [row[2] for row in result]
+    pinglist = ping(hostlist)
+    i = 0
+    for row in result:
+        
+        hardware = {
+         "id"           : row[0],
+         "hostname"     : row[1],
+         "nickname"     : row[2],
+         "MAC_address"  : row[3],
+         "IP_address"   : row[4],
+         "location"     : row[5],
+         "notes"        : row[6],
+         "serial"       : row[7],
+         "firmware"     : row[8],
+         "type"         : row[9],
+         "XPORT_address": row[10],
+         "status"       : pinglist[i]
+        }
+         
+        hardware_list.append(hardware)
+        i += 1
+    
+    output = template('overview', rows=hardware_list)
+    return output
+    
+
+# Roach Status: overview of single piece of kit
+@route('/status/:id')
+def view_hardware(id):
+    """ URL: *@route('/hardware')*"""
+    # Retrieve hardware list from database
+    idno = int(id)
+    sql = "SELECT * FROM hardware WHERE id=%i"%idno
+    # Establish database connection
+    dbconnect = sqlite3.connect(DB_NAME) 
+    db = dbconnect.cursor()
+    db.execute(sql)
+    result = db.fetchone()
+    db.close()
+
+    ip, port = ('192.168.4.20', 10001)
+    xp = xport.Xport(ip, port)
+    
+    flashmsgs = []
+    flashmsgs.append(xp)
+    flashmsgs.append(xp.connect())
+    chans = xp.get_channels()
+    flashmsgs.append(chans)
+    
+    hardware = {
+     "id"           : result[0],
+     "hostname"     : result[1],
+     "nickname"     : result[2],
+     "MAC_address"  : result[3],
+     "IP_address"   : result[4],
+     "location"     : result[5],
+     "notes"        : result[6],
+     "serial"       : result[7],
+     "firmware"     : result[8],
+     "type"         : result[9]
+    }
+
+    output = template('status', hardware=hardware, flashmsgs=flashmsgs, chans=chans)
+    return output
+
 # Power ON
 @route('/poweron')
 def power_on():
+   """URL: *@route('/poweron')* """
    ip, port = ('192.168.4.20', 10001)
    xp = xport.Xport(ip, port)
-   xp.close()
    
    flashmsgs = []
    flashmsgs.append(xp)
-   print xp.connect()
    flashmsgs.append(xp.connect())
-   #flashmsg.append(xp.power_up())
+   #flashmsgs.append(xp.power_up())
+   flashmsgs.append(xp.power_down())
    
    output = template('index', flashmsgs=flashmsgs, roach=roach)
    return output
@@ -68,7 +151,7 @@ def power_on():
 # List registers (enhanced ?listdev)
 @route('/listreg')
 def listreg():
-    """reads registers and then prints them"""
+    """URL: *@route('/listreg')*"""
     fpga = katcp_wrapper.FpgaClient(roach, port, timeout=10)
     time.sleep(0.1)
     registers = fpga.listdev()
@@ -150,7 +233,7 @@ def listreg():
 # List bitstreams (?listbof)
 @route('/listbof')
 def listbof():
-    
+    """URL: *@route('/listbof')*"""
     fpga = katcp_wrapper.FpgaClient(roach, port, timeout=10)
     time.sleep(1)
     boflist = fpga.listbof()
@@ -167,6 +250,7 @@ def listbof():
 # Program FPGA (?progdev)
 @route('/progdev/:bitstream')
 def progdev(bitstream):
+    """URL: *@route('/progdev/:bitstream')*"""
     flashmsg = ["FAILURE: progdev failed for some reason.", "error"]
     
     fpga = katcp_wrapper.FpgaClient(roach, port, timeout=10)
@@ -182,7 +266,7 @@ def progdev(bitstream):
 # ?read_int implementation for IO registers
 @route('/readint/:regname')
 def read_int(regname):
-    
+    """URL: *@route('/readint/:regname')*"""
     
     fpga = katcp_wrapper.FpgaClient(roach, port, timeout=10)
     time.sleep(1)
@@ -201,6 +285,7 @@ def read_int(regname):
 # snap block plotter (64 bit)
 @route('/snap64/:snap_id/bytes/:bytes')
 def snap64(snap_id, bytes):
+    """ URL: *@route('/snap64/:snap_id/bytes/:bytes')*"""
     
     fpga = katcp_wrapper.FpgaClient(roach, port, timeout=10)
     time.sleep(0.1)
@@ -251,7 +336,7 @@ def snap64(snap_id, bytes):
 # Interleaver
 @route('/interleaved')
 def interleavr():
-
+    """URL: *@route('/interleaved')*"""
     fpga = katcp_wrapper.FpgaClient(roach, port, timeout=10)
     time.sleep(0.1)
     bytes=4096*4
@@ -308,10 +393,13 @@ def interleavr():
     else:
         fpga.stop()
         return "<p> Something went wrong...</p>"
+
+
  
 # snap block plotter (32 bit)
 @route('/snap/:snap_id/bytes/:bytes/fmt/:fmt')
 def snap32(snap_id, bytes, fmt):
+    """ URL: *@route('/snap/:snap_id/bytes/:bytes/fmt/:fmt')*"""
     fpga = katcp_wrapper.FpgaClient(roach, port, timeout=10)
     time.sleep(0.1)
     
@@ -349,6 +437,7 @@ def snap32(snap_id, bytes, fmt):
 # BRAM plotter (32 bit)
 @route('/bram/:snap_id/bytes/:bytes/fmt/:fmt')
 def bram(snap_id, bytes, fmt):
+    """ URL: *@route('/bram/:snap_id/bytes/:bytes/fmt/:fmt')*"""
     fpga = katcp_wrapper.FpgaClient(roach, port, timeout=10)
     time.sleep(0.1)
 
@@ -404,11 +493,115 @@ def is_ajax():
     else:
         return 'This is a normal request'
 
+# Hardware management
+# Create, Update & Delete
+# Create new piece of kit
+@route('/add', method='GET')
+def hardware_add():
+    """URL: *@route('/add', method='GET')*"""
+    
+    try:
+        if request.GET.get('save','').strip():
+            hostname = request.GET.get('hostname', '').strip()
+            nickname = request.GET.get('nickname', '').strip()
+            MAC_address = request.GET.get('MAC_address', '').strip()
+            IP_address = request.GET.get('IP_address', '').strip()
+            XPORT_address = request.GET.get('XPORT_address', '').strip()
+            location = request.GET.get('location', '').strip()
+            notes = request.GET.get('notes', '').strip()
+            serial = request.GET.get('serial', '').strip()
+            firmware = request.GET.get('firmware', '').strip()
+            atype = request.GET.get('type', '').strip()
+            # Establish database connection
+            dbconnect = sqlite3.connect(DB_NAME) 
+            db = dbconnect.cursor()
+            db.execute("INSERT INTO hardware (hostname,nickname,MAC_address,IP_address,location,notes,serial,firmware,type,XPORT_address) VALUES (?,?,?,?,?,?,?,?,?,?)", (hostname,nickname,MAC_address,IP_address,location,notes,serial,firmware,atype,XPORT_address))
+        
+            new_id = db.lastrowid
+            dbconnect.commit()
+            db.close()
+            return '<p>Hardware with ID number %s updated successfully.</p>' %new_id
+        else:
+           return template('hardware_add.tpl') 
+    except:
+        return oops
+
+# Edit piece of kit
+@route('/edit/:id', method='GET')
+def hardware_edit(id):
+    """URL: *@route('/edit/:id', method='GET')*"""
+    try:
+        if request.GET.get('save','').strip():
+
+            hostname = request.GET.get('hostname', '').strip()
+            nickname = request.GET.get('nickname', '').strip()
+            MAC_address = request.GET.get('MAC_address', '').strip()
+            IP_address = request.GET.get('IP_address', '').strip()
+            location = request.GET.get('location', '').strip()
+            notes = request.GET.get('notes', '').strip()
+            serial = request.GET.get('serial', '').strip()
+            firmware = request.GET.get('firmware', '').strip()
+            atype = request.GET.get('type', '').strip()
+            # Establish database connection
+            dbconnect = sqlite3.connect(DB_NAME) 
+            db = dbconnect.cursor()
+            db.execute("UPDATE hardware SET hostname = ?, nickname = ?, MAC_address = ?, IP_address = ?,location = ?, notes = ?, serial = ?, firmware = ?, type= ? WHERE id LIKE ?", (hostname,nickname,MAC_address,IP_address,location,notes,serial,firmware,atype,id))
+
+            dbconnect.commit()
+            db.close()
+            return '<p>Hardware with ID %s updated successfully.</p>' %id
+        else:
+            idno = int(id)
+            sql = "SELECT * FROM hardware WHERE id=%i"%idno
+            db.execute(sql)
+            result = db.fetchone()
+            db.close()
+
+            hardware = {
+             "id"           : result[0],
+             "hostname"     : result[1],
+             "nickname"     : result[2],
+             "MAC_address"  : result[3],
+             "IP_address"   : result[4],
+             "location"     : result[5],
+             "notes"        : result[6],
+             "serial"       : result[7],
+             "firmware"     : result[8],
+             "type"         : result[9]
+            }
+                
+            output = template('hardware_edit.tpl', hardware=hardware)
+            return output
+    except:
+        return '<p>Error: record could not be loaded</p>'
+
+
+# Delete piece of kit
+@route('/delete/:id')
+def hardware_delete(id):
+    """ URL: *@route('/delete/:id')*"""
+    sql = "DELETE FROM hardware WHERE id=%s"%id
+    # Establish database connection
+    dbconnect = sqlite3.connect(DB_NAME) 
+    db = dbconnect.cursor()
+    try:
+        db.execute(sql)
+        dbconnect.commit()
+        db.close()
+    except:
+        # Establish database connection
+        db.rollback()
+        db.close()
+    return '<p>Hardware with ID %s deleted successfully</p>'%id    
+
+
+
 # D-PAD Spectrometer quick look
 # Specifically designed for D-PAD fast transient backend
 # Where the even and odd channels are 16.0_16.0 concatenated in 32bit BRAM
 @route('/spectrometer')
-def read_regs():
+def spectrometer():
+    """URL: *@route('/spectrometer')*"""
     
     fpga = katcp_wrapper.FpgaClient(roach, port, timeout=10)
     time.sleep(1)
@@ -522,11 +715,13 @@ def read_regs():
 
 @route('/upload')
 def uploader():
+    """ URL: *@route('/upload')* """
     output = template('upload')
     return output
 
 @route('/upload/do', method='POST')
-def do_upload():
+def upload():
+    """ URL: *@route('/upload/do', method='POST')* """
     data = request.files.get('data')
     raw = data.file.read() # This is dangerous for big files
     filename = data.filename
@@ -537,6 +732,7 @@ def do_upload():
 
 @route('/config/:filename')
 def config(filename):
+    """ URL: *@route('/config/:filename')*"""
     fpga = katcp_wrapper.FpgaClient(roach, port, timeout=10)
     time.sleep(1)
     

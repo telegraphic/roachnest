@@ -13,6 +13,7 @@
 	<th>nickname</th>
 	<th>MAC Address</th>
 	<th>IP Address</th>
+	<th>XPORT Address</th>
 	<th>Status</th>
 	<th>Actions</th>
 </tr>
@@ -25,6 +26,7 @@
 	<td>{{row["nickname"]}}</td>
 	<td>{{row["MAC_address"]}}</td>
 	<td>{{row["IP_address"]}}</td>
+	<td>{{row["XPORT_address"]}}</td>
 
 	<td>
 	%if(row["status"] == 1):

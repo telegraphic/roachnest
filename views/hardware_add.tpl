@@ -22,6 +22,10 @@
 	<td><input type="text" size="100" maxlength="100" name="IP_address" /></td>
 </tr>
 <tr>
+	<td><label for="XPORT_address">XPORT Address</label></td>
+	<td><input type="text" size="100" maxlength="100" name="XPORT_address" /></td>
+</tr>
+<tr>
 	<td><label for="location">Location</label></td>
 	<td><input type="text" size="100" maxlength="100" name="location" /></td>
 </tr>

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-lolcatkcp.py
+katcp_helpers.py
 ------------
 
 Created by Danny Price on 2011-01-12.\n
@@ -111,12 +111,21 @@ def reset(fpga):
 def snapper(fpga, snap_id, bytes=4096, fmt="uint32", byteswap=True):
     """Reads a snap block, and returns the unpacked values as an array.
     
-        * *fpga*: the corr.katcp_wrapper.FpgaClient(roach, port, timeout=10) object
-        * *snap_id*: name of the block to snap
-        * *fmt*: unpack format to use (numpy data formats, e.g. uint32, int8)
-        * *bytes*: number of bytes to read (remember, 1 byte = 8 bits)
-        * *byteswap:* Defaults to true. The PowerPC has a different endianess to most architectures, and \
-        KATCP does NOT do host-to-network bit swapping. So, the byte order generally needs to be swapped.
+      Parameters
+      ----------
+      
+      fpga: katcp_wrapper.FpgaClient() 
+        The fpgaClient object from katcp_wrapper
+      snap_id: string
+        name of the block to snap
+      fmt: string (dtype)
+        unpack format to use (numpy data formats, e.g. uint32, int8)
+      bytes: int
+        number of bytes to read (remember, 1 byte = 8 bits)
+      byteswap: bool
+        Defaults to true. The PowerPC has a different endianess to most architectures, and \
+        KATCP does NOT do host-to-network bit swapping. So, the byte order generally needs 
+        to be swapped.
      
     """
     # Snap is triggered when first control bit changes from low to high:

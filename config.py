@@ -16,6 +16,6 @@ version      = "v1.0"
 
 # Change logo and stylesheet
 branding_css = '/files/branding.css'
-branding_logo= '/files/logo_roach.png'
+branding_logo= '/files/logo.png'
 
 
