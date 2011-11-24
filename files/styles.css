@@ -38,9 +38,9 @@ div.progress-container {
   margin: 0 auto;
 }
 
-div.progress-container > div {
+div.progress-container > div.bar {
   background-color: #ACE97C; 
-  height: 12px;
+  height: 17px;
 }
 
 div.read_int {
@@ -52,6 +52,19 @@ div.read_int {
  width: 120px;
 }
 
+/* Navigation */
+
+.back {
+ float: left;
+ text-align: left;
+
+}
+
+.forward {
+ float: right;
+ text-align: right;
+
+}
 
 /* Pure CSS tooltips - http://psacake.com/web/jl.asp */
 

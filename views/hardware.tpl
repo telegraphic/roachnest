@@ -2,7 +2,13 @@
 
 %include header title='Hardware Overview'
 
-
+%if(flashmsgs != 0 and flashmsgs != []):
+<div class="success">
+%for msg in flashmsgs:
+{{msg}}<br />
+%end
+</div>
+%end
 
 <p>This page lists the status of CASPER hardware that is registered in CASPER GUI's database:</p>
 <table>
@@ -14,8 +20,8 @@
 	<th>MAC Address</th>
 	<th>IP Address</th>
 	<th>XPORT Address</th>
-	<th>Status</th>
-	<th>Actions</th>
+	<th>PPC Ping</th>
+	<th>Xport Ping</th>
 </tr>
 </thead>
 <tbody>
@@ -33,23 +39,26 @@
 	  <span class="ss_sprite ss_accept "> &nbsp; </span>
 	%else:
 	  <span class="ss_sprite ss_cancel"> &nbsp; </span>
-	%end
+	%end	
 	</td>
-	<td><form name="actions" action="/" method="GET">
-	<select onchange="this.form.submit()" name="action">
-	  <option value="#">---Actions---</option>
-	  <option value="/status/{{row["id"]}}">Detailed status</option>
-	  <option value="#">Wake on LAN</option>
-	  <option value="#">Remote shutdown</option>
-	  <option value="#">Program bitstream</option>
-	  <option value="#">Connect via X-PORT</option>
-	  <option value="#">Connect via serial</option>
-	</select>
-	</form>
+
+	<td>
+	%if(row["XPORT_status"] == 1):
+	  <span class="ss_sprite ss_accept "> &nbsp; </span>
+	%else:
+	  <span class="ss_sprite ss_cancel"> &nbsp; </span>
+	%end	
 	</td>
+
+
   </tr>
 %end
 </tbody>
 </table>
+
+<form name="power" action="/" method="GET">
+<input type="submit" value="Power all ON" name="power" />
+<input type="submit" value="Power all OFF" name="power" />
+</form>
 
 %include footer

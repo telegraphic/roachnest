@@ -39,8 +39,6 @@
 <script type="text/javascript">
 $(function () {
     var d1 = {{data}};
-   
-    
     $.plot($("#placeholder"), [ d1 ]);
 });
 </script>

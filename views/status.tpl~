@@ -1,0 +1,77 @@
+%#status.tpl: CASPER GUI Template for status page
+
+%include header title='%s: report'%hardware["hostname"]
+
+%if(flashmsgs != 0):
+<div class="success">
+%for msg in flashmsgs:
+{{msg}}<br />
+%end
+</div>
+%end
+
+<div class="span-7 colborder">
+<table>
+<thead>
+	<tr><th>{{hardware["hostname"]}}</th> <th>aka <em>"{{hardware["nickname"]}}"</em></th></tr>
+</thead>
+<tbody>
+    <tr><td>IP Address</td> <td>{{hardware["IP_address"]}}</td></tr>
+    <tr><td>MAC Address</td> <td>{{hardware["MAC_address"]}}</td></tr>
+    <tr><td>Type</td>		<td>{{hardware["type"]}}</td></tr>
+    <tr><td>Serial</td> 		<td>{{hardware["serial"]}}</td></tr>
+    <tr><td>Firmware</td> 	<td>{{hardware["firmware"]}}</td></tr>
+    <tr><td>Location</td>  	<td>{{hardware["location"]}}</td></tr>
+</tbody>
+</table>
+  <a href="/edit/{{hardware["id"]}}" title="Edit entry"><span class="ss_sprite ss_table_edit"> &nbsp; </span> Edit info </a> 
+</div>
+
+<div class="span-8 colborder">
+<h4>Operating temperature / voltages</h4>
+<table>
+  %for chan in chans:
+  %  width = int( (float(chan[1])-float(chan[2])) / (float(chan[3])-float(chan[2])) * 100)
+	<tr>
+		<td><label>{{chan[0]}}</label></td>
+		<td>{{str("%.1f")%chan[2]}}</td> 
+		<td><div class="progress-container">
+		    <div class="progress-text">{{str("%2.2f")%chan[1]}}</div>
+		    <div class="bar" style="width: {{width}}px;"></div></div>
+		    
+		</td>
+		<td>{{str("%.1f")%chan[3]}}</td>
+	</tr>
+	%end
+</table>
+
+
+</div>
+
+<div class="span-7 last">
+
+<h4>Fan Speeds</h4>
+<table>
+	<tr><td><label>Fan 1:</label> </td>
+	<td>{{fans[0]}}</td></tr>
+	<tr><td><label>Fan 2:</label> </td>
+	<td>{{fans[1]}}</td></tr>
+	<tr><td><label>Fan 3:</label> </td>
+	<td>{{fans[2]}}</td></tr>
+</table>
+
+<h4>Actions</h4>
+<ul>
+	<li><a href="/listbof/{{hardware["id"]}}">Reprogram FPGA</a></li>
+	<li><a href="/listreg/{{hardware["id"]}}">List registers</a></li>
+	<li><a href="/poweron/{{hardware["id"]}}">Power ON</a></li>
+	<li><a href="/poweroff/{{hardware["id"]}}">Power OFF</a></li>
+</ul>
+</li>
+</div>
+
+<hr class="space">
+
+<a href="/">&laquo; Return to overview</a>
+
+%include footer

@@ -9,6 +9,8 @@
 %reglist    = data["reglist"]
 %vals       = data["vals"]
 %flashmsg   = data["flashmsg"]
+%outreglist = data["outreglist"]
+%outregvals = data["outregvals"]
 
 %if(flashmsg != 0 and flashmsg != ""):
 <div class="success">{{flashmsg}}</div>
@@ -23,7 +25,15 @@
 %regname, regval = reglist[i], vals[i]
 <tr><td>{{regname}}</td><td>{{regval}}</td></tr>
 %end
-</table></tbody>
+</tbody></table>
+
+<h3>Status registers</h3>
+<table><tbody>
+%for i in range(0,len(outreglist)):
+%regname, regval = outreglist[i], outregvals[i]
+<tr><td>{{regname}}</td><td>{{regval}}</td></tr>
+%end
+</tbody></table>
 
 
 </span>
@@ -31,13 +41,13 @@
 <span class="span-8 colborder">
 <h3>Snap registers</h3>
 %for register in snaplist:
-  <h4><a href="snap/{{register}}/bytes/4096/fmt/int8">{{register}}</a></h4> 
+  <h4><a href="/snap/{{roach["id"]}}/{{register}}/bytes/4096/fmt/int8/op/raw">{{register}}</a></h4> 
 %end
 
 %if len(snap64list) > 0:
 <h3>Snap 64 registers</h3>
 %for register in snap64list:
-  <h4><a href="snap64/{{register}}/bytes/4096">{{register}}</a></h4> 
+  <h4><a href="/snap64/{{roach["id"]}}/{{register}}/bytes/4096">{{register}}</a></h4> 
 %end
 %end
 
@@ -52,7 +62,7 @@
 
 <span class="span-7 last">
 <h3>Write Register</h3>
-<form name="writereg" action="listreg" method="GET">
+<form name="writereg" action="/listreg/{{roach['id']}}" method="GET">
 <table><tbody>
     <tr>
         <td>Register:</td>
@@ -81,13 +91,13 @@
 <hr class="space">
 
 <h3> Reset / resync</h3>
-<form name="writereg" action="listreg" method="GET">
+<form name="writereg" action="/listreg/{{roach['id']}}" method="GET">
 <input type="submit" value="Reset &raquo;" name="reset" />
 </form>
 
 <hr class="space">
 
-<h3> <a href="/listreg"> Refresh </a></h3>
+<h3> <a href="/listreg/{{roach['id']}}"> Refresh </a></h3>
 
 <hr class="space">
 

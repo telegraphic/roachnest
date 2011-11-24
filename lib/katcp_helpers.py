@@ -11,7 +11,11 @@ Helper functions and classes for controlling roach boards by KATCP.
 
 """
 
-import os, sys
+import os, sys, sqlite3 
+from lxml import etree
+
+# Import values from configuration file
+import config
 
 # CASPER imports
 import corr,time,numpy,re
@@ -23,48 +27,35 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 
-
-
-# Ping class
-# Threaded version from wellho.net
-from threading import Thread
-class Pinger(Thread):
-    """ Threaded python based ping class. Sends out pings using different threads
-    and returns the response. Code from wellho.net
-    """
-    def __init__ (self,ip):
-        Thread.__init__(self)
-        self.ip = ip
-        self.status = -1
-        self.lifeline = re.compile(r"(\d) received")
-        def run(self):
-            pingaling = os.popen("ping -q -c1 "+self.ip,"r")
-            while 1:
-                line = pingaling.readline()
-                if not line: break
-                igot = re.findall(self.lifeline,line)
-                if igot:
-                    self.status = int(igot[0])
-
-# Threaded ping call
-# Not really necessary for one ROACH, but will come in handy later
-def ping(hostlist):
-    """Ping a list of hosts (using the threaded Pinger class)"""
-    responses = []
-    for host in hostlist:
-       ip = str(host)
-       current = Pinger(ip)
-       responses.append(current)
-       current.start()
+def dbget(id):
+    """ Retrieves a hardware record from the hardware database.
     
-    time.sleep(1)
+    TODO: give this function a better name"""
+    # Retrieve hardware list from database
+    idno = int(id)
+    sql = "SELECT * FROM hardware WHERE id=%i"%idno
+    # Establish database connection
+    dbconnect = sqlite3.connect(config.database) 
+    db = dbconnect.cursor()
+    db.execute(sql)
+    result = db.fetchone()
+    db.close()
+
     
-    statuses = []
-    for response in responses:
-        statuses.append(response.status)
-    return statuses
-
-
+    hardware = {
+     "id"           : result[0],
+     "hostname"     : result[1],
+     "nickname"     : result[2],
+     "MAC_address"  : result[3],
+     "IP_address"   : result[4],
+     "location"     : result[5],
+     "notes"        : result[6],
+     "serial"       : result[7],
+     "firmware"     : result[8],
+     "type"         : result[9],
+     "XPORT_address": result[10]
+    }
+    return hardware
 
 def bin2dec(binary):
     """return the decimal string representation of *binary*"""

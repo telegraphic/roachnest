@@ -1,8 +1,8 @@
-%import config
+%import lib.config as config
 	<hr />
 
 	<div id="footer">
-	  <h3 class="centertext">{{config.title}} {{config.version}}</a></h3> 
+	  <h3 class="centertext">roachnest {{config.version}}</a></h3> 
 	</div>
 
 	</div><!-- container -->
