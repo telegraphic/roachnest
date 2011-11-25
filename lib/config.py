@@ -22,5 +22,6 @@ database = 'hardware.db'
 # Change logo and stylesheet
 branding_css = '/files/branding.css'
 branding_logo= '/files/logos/dancing-hamsters-1.gif'
+favicon      = '/files/favicon.ico'
 
 

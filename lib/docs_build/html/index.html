@@ -1,0 +1,567 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CASPERGUI Documentation &mdash; CASPERGUI v1 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="CASPERGUI v1 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">CASPERGUI v1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="caspergui-documentation">
+<h1>CASPERGUI Documentation<a class="headerlink" href="#caspergui-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="copyright-licensing">
+<h2>Copyright &amp; Licensing<a class="headerlink" href="#copyright-licensing" title="Permalink to this headline">¶</a></h2>
+<p><strong>CASPERGUI: A browser based user interface for monitor &amp; control of CASPER hardware</strong></p>
+<p><em>Copyright (C) 2011  Danny Price</em></p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Caspergui is a browser based Graphical User Interface (GUI) for control of CASPER hardware.
+This script utilises the KATCP python libraries, the bottle web framework,
+and sqlite3:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://casper.berkeley.edu/wiki/KATCP">http://casper.berkeley.edu/wiki/KATCP</a></li>
+<li><a class="reference external" href="http://bottle.paws.de/">http://bottle.paws.de/</a></li>
+<li><a class="reference external" href="http://docs.python.org/library/sqlite3.html">http://docs.python.org/library/sqlite3.html</a></li>
+</ul>
+</div></blockquote>
+<p>The HTML/CSS is based on blueprint CSS web framework, and plotting is done with HTML5/javascript flot:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://www.blueprintcss.org/">http://www.blueprintcss.org/</a></li>
+<li><a class="reference external" href="http://code.google.com/p/flot/">http://code.google.com/p/flot/</a></li>
+</ul>
+</div></blockquote>
+<p>This is still under heavy development, with features being added / removed sporadically. Use at your own risk, and be aware that I&#8217;ve done no security checking (so don&#8217;t run this on the world wide web).</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>Assuming you&#8217;ve got the dependencies sorted, all you should need to do is run:</p>
+<div class="highlight-python"><pre>&gt;&gt; python caspergui.py &lt;ROACH_NAME or IP&gt; [options]</pre>
+</div>
+<p>for example, I&#8217;ve got an entry in my /etc/hosts file for &#8216;junebug&#8217;, whose IP address is 192.168.126.3. I would
+run:</p>
+<div class="highlight-python"><pre>&gt;&gt; python caspergui.py junebug</pre>
+</div>
+<p>This would start up a webserver on localhost:8080, and junebug is set as the roach to send and receive queries from. The options available are:</p>
+<div class="highlight-python"><pre>Options:
+  -h, --help            show this help message and exit
+  -p PORT, --port=PORT  Select KATCP port. Default is 7147
+  -i HOSTIP, --hostip=HOSTIP
+                        change host IP address to run server. Default is
+                        localhost (127.0.0.1)
+  -P HOSTPORT, --hostport=HOSTPORT
+                        change host port for server. Default is 8080</pre>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/picture.jpg"><img alt="alternate text" src="_images/picture.jpg" style="width: 249.5px; height: 300.0px;" /></a>
+<p class="caption">apparently this will show up as a caption</p>
+</div>
+</div>
+<div class="section" id="module-caspergui">
+<span id="module-listing"></span><h2>Module Listing<a class="headerlink" href="#module-caspergui" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="caspergui-py">
+<h3>caspergui.py<a class="headerlink" href="#caspergui-py" title="Permalink to this headline">¶</a></h3>
+<p>Created by Danny Price on 2011-01-12.</p>
+<p>Copyright (c) 2011 The University of Oxford. All rights reserved.</p>
+<p>Caspergui is a browser based Graphical User Interface (GUI) for control of CASPER hardware. This script needs lolkatcp.py to run, which houses all the katcp commands for data capture, plotting etc.</p>
+<p>This is still under heavy development. Use at your own risk, and be aware that I&#8217;ve done no security checking (so don&#8217;t run this on the world wide web).</p>
+<dl class="function">
+<dt id="caspergui.bram">
+<tt class="descclassname">caspergui.</tt><tt class="descname">bram</tt><big>(</big><em>snap_id</em>, <em>bytes</em>, <em>fmt</em><big>)</big><a class="headerlink" href="#caspergui.bram" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/bram/:snap_id/bytes/:bytes/fmt/:fmt&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.config">
+<tt class="descclassname">caspergui.</tt><tt class="descname">config</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#caspergui.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/config/:filename&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.download">
+<tt class="descclassname">caspergui.</tt><tt class="descname">download</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#caspergui.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/download/:filename&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.hardware_add">
+<tt class="descclassname">caspergui.</tt><tt class="descname">hardware_add</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.hardware_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/add&#8217;, method=&#8217;GET&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.hardware_delete">
+<tt class="descclassname">caspergui.</tt><tt class="descname">hardware_delete</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#caspergui.hardware_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/delete/:id&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.hardware_edit">
+<tt class="descclassname">caspergui.</tt><tt class="descname">hardware_edit</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#caspergui.hardware_edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/edit/:id&#8217;, method=&#8217;GET&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.index">
+<tt class="descclassname">caspergui.</tt><tt class="descname">index</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/index.html&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.interleavr">
+<tt class="descclassname">caspergui.</tt><tt class="descname">interleavr</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.interleavr" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/interleaved&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.list_hardware">
+<tt class="descclassname">caspergui.</tt><tt class="descname">list_hardware</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.list_hardware" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/hardware&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.listbof">
+<tt class="descclassname">caspergui.</tt><tt class="descname">listbof</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.listbof" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/listbof&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.listreg">
+<tt class="descclassname">caspergui.</tt><tt class="descname">listreg</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.listreg" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/listreg&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.power_on">
+<tt class="descclassname">caspergui.</tt><tt class="descname">power_on</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.power_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/poweron&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.progdev">
+<tt class="descclassname">caspergui.</tt><tt class="descname">progdev</tt><big>(</big><em>bitstream</em><big>)</big><a class="headerlink" href="#caspergui.progdev" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/progdev/:bitstream&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.read_int">
+<tt class="descclassname">caspergui.</tt><tt class="descname">read_int</tt><big>(</big><em>regname</em><big>)</big><a class="headerlink" href="#caspergui.read_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/readint/:regname&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.server_static">
+<tt class="descclassname">caspergui.</tt><tt class="descname">server_static</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#caspergui.server_static" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/files/:path#.+#&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.snap32">
+<tt class="descclassname">caspergui.</tt><tt class="descname">snap32</tt><big>(</big><em>snap_id</em>, <em>bytes</em>, <em>fmt</em><big>)</big><a class="headerlink" href="#caspergui.snap32" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/snap/:snap_id/bytes/:bytes/fmt/:fmt&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.snap64">
+<tt class="descclassname">caspergui.</tt><tt class="descname">snap64</tt><big>(</big><em>snap_id</em>, <em>bytes</em><big>)</big><a class="headerlink" href="#caspergui.snap64" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/snap64/:snap_id/bytes/:bytes&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.spectrometer">
+<tt class="descclassname">caspergui.</tt><tt class="descname">spectrometer</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.spectrometer" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/spectrometer&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.upload">
+<tt class="descclassname">caspergui.</tt><tt class="descname">upload</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.upload" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/upload/do&#8217;, method=&#8217;POST&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.uploader">
+<tt class="descclassname">caspergui.</tt><tt class="descname">uploader</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.uploader" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/upload&#8217;)</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="caspergui.view_hardware">
+<tt class="descclassname">caspergui.</tt><tt class="descname">view_hardware</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#caspergui.view_hardware" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>&#64;route(&#8216;/hardware&#8217;)</em></p>
+</dd></dl>
+
+</div>
+<span class="target" id="module-xport"></span><div class="section" id="xport-py">
+<h3>xport.py<a class="headerlink" href="#xport-py" title="Permalink to this headline">¶</a></h3>
+<p>Created by Danny Price, 03 October 2011.</p>
+<p>Based on roach_monitor.py at:
+<a class="reference external" href="https://casper.berkeley.edu/wiki/Roach_monitor_and_management_subsystem">https://casper.berkeley.edu/wiki/Roach_monitor_and_management_subsystem</a></p>
+<p>This module allows for communication with the ROACH X-port. 
+ROACH has an onboard, fully independent management subsystem that can be accessed through the Xport. 
+The X-port system monitors voltages and temperatures and will shut down the board 
+if these are out of specification. A log is kept of the shutdown cause, its value and time.</p>
+<p>This class is still under pretty heavy development so should be considered very beta and used
+at your own risk.</p>
+<dl class="class">
+<dt id="xport.Xport">
+<em class="property">class </em><tt class="descclassname">xport.</tt><tt class="descname">Xport</tt><big>(</big><em>ip</em>, <em>port</em><big>)</big><a class="headerlink" href="#xport.Xport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Actel Fusion X-port class, for communicating with M&amp;C</p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="xport.Xport.clear_crashlog">
+<tt class="descname">clear_crashlog</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.clear_crashlog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset crash log counter</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.close">
+<tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close xport socket connection</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.connect">
+<tt class="descname">connect</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to xport socket</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.flush">
+<tt class="descname">flush</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.flush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flush receive buffer</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.get_board_time">
+<tt class="descname">get_board_time</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.get_board_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check and retrieve board uptime. Returns board up time in seconds (int).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.get_channels">
+<tt class="descname">get_channels</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.get_channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the voltage and temperatures of the PPC, V5, PSU, and Actel chips.</p>
+<p>Returns a list of format:
+(channel name, channel state, channel min operational value, channel max operational val)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.get_fan_speeds">
+<tt class="descname">get_fan_speeds</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.get_fan_speeds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check and retrieve fan speeds. Returns a list of fan speeds</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.get_id">
+<tt class="descname">get_id</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.get_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return board ID and revision</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.get_last_shutdown">
+<tt class="descname">get_last_shutdown</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.get_last_shutdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check and retrieve reason for last shutdown. Returns reason as a string</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.get_power_good">
+<tt class="descname">get_power_good</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.get_power_good" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check and retrieve power good status of voltage regulators. Returns a list of power good signals.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.get_power_state">
+<tt class="descname">get_power_state</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.get_power_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check and retrive board power state. Returns power state as a string</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.get_serial">
+<tt class="descname">get_serial</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.get_serial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check and retrieve serial number. After first query the serial
+number is stored as class variable self.serial</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.power_down">
+<tt class="descname">power_down</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.power_down" title="Permalink to this definition">¶</a></dt>
+<dd><p>Power down the ROACH</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.power_up">
+<tt class="descname">power_up</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.power_up" title="Permalink to this definition">¶</a></dt>
+<dd><p>Power up the ROACH (Wake on LAN)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.read">
+<tt class="descname">read</tt><big>(</big><em>addr</em><big>)</big><a class="headerlink" href="#xport.Xport.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a 16bit value from the Fusion part through the Xport.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.toggle_config_h">
+<tt class="descname">toggle_config_h</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.toggle_config_h" title="Permalink to this definition">¶</a></dt>
+<dd><p>todo: Toggle PPC EEPROM boot (config H)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.toggle_power_on_reset">
+<tt class="descname">toggle_power_on_reset</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.toggle_power_on_reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>todo: Toggle auto power-on after hard-reset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.warm_rst">
+<tt class="descname">warm_rst</tt><big>(</big><big>)</big><a class="headerlink" href="#xport.Xport.warm_rst" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset ROACH, but not Actel</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xport.Xport.write">
+<tt class="descname">write</tt><big>(</big><em>addr</em>, <em>value</em><big>)</big><a class="headerlink" href="#xport.Xport.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a 16bit value to the Fusion part through the Xport.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="xport.xportError">
+<em class="property">exception </em><tt class="descclassname">xport.</tt><tt class="descname">xportError</tt><big>(</big><em>msg</em><big>)</big><a class="headerlink" href="#xport.xportError" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple class for X-port error handling</p>
+</dd></dl>
+
+</div>
+<span class="target" id="module-katcp_helpers"></span><div class="section" id="katcp-helpers-py">
+<h3>katcp_helpers.py<a class="headerlink" href="#katcp-helpers-py" title="Permalink to this headline">¶</a></h3>
+<p>Created by Danny Price on 2011-01-12.</p>
+<p>Copyright (c) 2011 The University of Oxford. All rights reserved.</p>
+<p>Helper functions and classes for controlling roach boards by KATCP.</p>
+<dl class="class">
+<dt id="katcp_helpers.Pinger">
+<em class="property">class </em><tt class="descclassname">katcp_helpers.</tt><tt class="descname">Pinger</tt><big>(</big><em>ip</em><big>)</big><a class="headerlink" href="#katcp_helpers.Pinger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Threaded python based ping class. Sends out pings using different threads
+and returns the response. Code from wellho.net</p>
+<p class="rubric">Methods</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="katcp_helpers.bin2dec">
+<tt class="descclassname">katcp_helpers.</tt><tt class="descname">bin2dec</tt><big>(</big><em>binary</em><big>)</big><a class="headerlink" href="#katcp_helpers.bin2dec" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the decimal string representation of <em>binary</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="katcp_helpers.check_permissions">
+<tt class="descclassname">katcp_helpers.</tt><tt class="descname">check_permissions</tt><big>(</big><em>paths</em><big>)</big><a class="headerlink" href="#katcp_helpers.check_permissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check file permissions</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="katcp_helpers.dec2bin">
+<tt class="descclassname">katcp_helpers.</tt><tt class="descname">dec2bin</tt><big>(</big><em>decimal</em><big>)</big><a class="headerlink" href="#katcp_helpers.dec2bin" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the binary string representation of a <em>decimal</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="katcp_helpers.dec2hex">
+<tt class="descclassname">katcp_helpers.</tt><tt class="descname">dec2hex</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#katcp_helpers.dec2hex" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the hexadecimal string representation of integer <em>n</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="katcp_helpers.hex2dec">
+<tt class="descclassname">katcp_helpers.</tt><tt class="descname">hex2dec</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#katcp_helpers.hex2dec" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the integer value of a hexadecimal string <em>s</em></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="katcp_helpers.ping">
+<tt class="descclassname">katcp_helpers.</tt><tt class="descname">ping</tt><big>(</big><em>hostlist</em><big>)</big><a class="headerlink" href="#katcp_helpers.ping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ping a list of hosts (using the threaded Pinger class)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="katcp_helpers.reset">
+<tt class="descclassname">katcp_helpers.</tt><tt class="descname">reset</tt><big>(</big><em>fpga</em><big>)</big><a class="headerlink" href="#katcp_helpers.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the sync and all counters by sending reset signals to the FPGA.
+This assumes that the relevant control registers are called:</p>
+<blockquote>
+<div><ul class="simple">
+<li><em>cnt_rst</em>: counter reset</li>
+<li><em>sync_rst</em>: sync reset</li>
+<li><em>sync_en</em>: sync enable</li>
+</ul>
+</div></blockquote>
+<p>This def returns a flashmsg, which can be displayed on a page.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="katcp_helpers.snapper">
+<tt class="descclassname">katcp_helpers.</tt><tt class="descname">snapper</tt><big>(</big><em>fpga</em>, <em>snap_id</em>, <em>bytes=4096</em>, <em>fmt='uint32'</em>, <em>byteswap=True</em><big>)</big><a class="headerlink" href="#katcp_helpers.snapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a snap block, and returns the unpacked values as an array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>fpga: katcp_wrapper.FpgaClient()</strong> :</p>
+<blockquote>
+<div><p>The fpgaClient object from katcp_wrapper</p>
+</div></blockquote>
+<p><strong>snap_id: string</strong> :</p>
+<blockquote>
+<div><p>name of the block to snap</p>
+</div></blockquote>
+<p><strong>fmt: string (dtype)</strong> :</p>
+<blockquote>
+<div><p>unpack format to use (numpy data formats, e.g. uint32, int8)</p>
+</div></blockquote>
+<p><strong>bytes: int</strong> :</p>
+<blockquote>
+<div><p>number of bytes to read (remember, 1 byte = 8 bits)</p>
+</div></blockquote>
+<p><strong>byteswap: bool</strong> :</p>
+<blockquote class="last">
+<div><p>Defaults to true. The PowerPC has a different endianess to most architectures, and         KATCP does NOT do host-to-network bit swapping. So, the byte order generally needs 
+to be swapped.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="katcp_helpers.writereg">
+<tt class="descclassname">katcp_helpers.</tt><tt class="descname">writereg</tt><big>(</big><em>fpga</em>, <em>name</em>, <em>value</em>, <em>base=10</em><big>)</big><a class="headerlink" href="#katcp_helpers.writereg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a value to an FPGA register. 
+Very similar to fpga.write_int, but you can specify the base (e.g. base 2 for binary)</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">CASPERGUI Documentation</a><ul>
+<li><a class="reference internal" href="#copyright-licensing">Copyright &amp; Licensing</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#module-caspergui">Module Listing</a><ul>
+<li><a class="reference internal" href="#caspergui-py">caspergui.py</a></li>
+<li><a class="reference internal" href="#xport-py">xport.py</a></li>
+<li><a class="reference internal" href="#katcp-helpers-py">katcp_helpers.py</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">CASPERGUI v1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Danny Price.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
+    </div>
+  </body>
+</html>

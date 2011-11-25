@@ -7,6 +7,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>{{config.title}} | {{title}}</title>
 
+  <link rel="shortcut icon" type="image/x-icon" href="{{config.favicon}}">
+  
 	<!-- CASPER GUI CSS -->
 	<link rel="stylesheet" href="/files/styles.css" type="text/css" media="screen, projection">
 	<link rel="stylesheet" href="{{config.branding_css}}" type="text/css" media="screen, projection">
