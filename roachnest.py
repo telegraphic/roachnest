@@ -1,17 +1,32 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-caspergui.py
+roachnest.py
 ============
 
 Created by Danny Price on 2011-01-12.\n
 Copyright (c) 2011 The University of Oxford. All rights reserved.\n
 
-Caspergui is a browser based Graphical User Interface (GUI) for control of CASPER hardware. This script needs lolkatcp.py to run, which houses all the katcp commands for data capture, plotting etc.
+Roachnest is a browser based Graphical User Interface (GUI) for control of CASPER hardware.
+It facilitates basic monitor and control tasks, such as turning boards on and off via the XPORT, 
+reprogramming the FPGA, reading and writing registers, and plotting the contents of shared BRAMS 
+(snap blocks).
 
-This is still under heavy development. Use at your own risk, and be aware that I've done no security checking (so don't run this on the world wide web).
+Roachnest also provides basic hardware management through a small sqlite database. Users can add
+notes, specify IP addresses, hostnames, and other basic information necessary to keep track of
+hardware specifics.
+
+**License:** GNU GPL: http://www.gnu.org/copyleft/gpl.html
+
+**Warning:** I strongly suggest that this is available only through an internal network and 
+is not made accessible via the WWW. Use at your own risk.
 
 """
+
+# Python metadata
+__author__    = "Danny Price"
+__license__   = "GNU GPL"
+__version__   = "1.0"
 
 # Import dependencies
 import os, sys, time, re, struct, sqlite3
@@ -19,15 +34,12 @@ from bottle import *
 from lxml import etree
 
 import numpy as np
-import matplotlib
-matplotlib.use('Agg') # We don't want to send to X, rather to a imaging backend
-import matplotlib.pyplot as plt
 import katcp
 
 # CASPER GUI internal imports
 import lib.config as config
 import lib.katcp_wrapper as katcp_wrapper
-from lib.katcp_helpers import *
+from   lib.roachnest_helpers import *
 import lib.ping as ping
 import lib.xport as xport
 
@@ -35,18 +47,22 @@ import lib.xport as xport
 DIRROOT = config.dirroot  # Automatically set root dir to this script's location
 DB_NAME = config.database # Name of the database file
 
-
-
 # Static files
 @route('/files/:path#.+#')
 def server_static(path):
-    """URL: *@route('/files/:path#.+#')*"""
+    """URL: */files/:path#.+#*
+    
+    Returns static files (eg images, css, scripts, favicons).
+    """
     return static_file(path, root=DIRROOT+'/files')
 
 # Force download of files
 @route('/download/:filename')
 def download(filename):
-    """URL: *@route('/download/:filename')*"""
+    """URL: */download/:filename*
+    
+    Forces download of static files.
+    """
     return static_file(filename, root=DIRROOT+'/files', download=filename)
 
 # Index page
@@ -54,99 +70,91 @@ def download(filename):
 @route('/index.html')
 @route('/hardware')
 def list_hardware():
-    """URL: *@route('/hardware')* """
+    """URL: */* 
+    
+    Index page. Lists all boards in the hardware database.
+    """
     # Retrieve hardware list from database
     # Establish database connection
     dbconnect = sqlite3.connect(DB_NAME)    
     db = dbconnect.cursor()
-    db.execute("SELECT * FROM hardware")
-    result = db.fetchall()
-    db.close()
-    
-    hardware_list = []
-    
-    
-    # Make a list of things to ping
-    hostlist = [row[2] for row in result]
-    xphostlist = [row[10] for row in result]
-    
-    pinglist = []
-    for host in hostlist:
-      pinglist.append(ping.Host(host))
-    statuslist = ping.pingHosts(pinglist)
-    
-    pinglist = []
-    for host in xphostlist:
-      pinglist.append(ping.Host(host))
-    xpstatuslist = ping.pingHosts(pinglist)
-    
-    i = 0
-    for row in result:
-        
-        hardware = {
-         "id"           : row[0],
-         "hostname"     : row[1],
-         "nickname"     : row[2],
-         "MAC_address"  : row[3],
-         "IP_address"   : row[4],
-         "location"     : row[5],
-         "notes"        : row[6],
-         "serial"       : row[7],
-         "firmware"     : row[8],
-         "type"         : row[9],
-         "XPORT_address": row[10],
-         "status"       : statuslist[i].status,
-         "XPORT_status" : xpstatuslist[i].status
-        }
-         
-        hardware_list.append(hardware)
-        i += 1
     flashmsgs = []
     
-    # Turn all boards ON 
-    if(request.GET.get('power','').strip() == "Power all ON"):
+    try:
+      hardware_list = dbgetall()
+      
+      # Make a list of things to ping
+      hostlist   = [ping.Host(h["IP_address"]) for h in hardware_list]
+      xphostlist = [ping.Host(h["XPORT_address"]) for h in hardware_list]
+      
+      # Ping the fkrs
+      statuslist   = ping.pingHosts(hostlist)
+      xpstatuslist = ping.pingHosts(xphostlist)
+      
+      i = 0
       for roach in hardware_list:
-        if(roach["XPORT_status"] == 1):
-          xp = xport.Xport(roach["XPORT_address"], 10001)
-          flashmsgs.append("%s: %s"%(roach["nickname"], xp.power_up()))
-          xp.close()
+          roach["status"]       = statuslist[i].status
+          roach["XPORT_status"] = xpstatuslist[i].status
+          i += 1
           
-    # Turn all boards OFF       
-    if(request.GET.get('power','').strip() == "Power all OFF"):
-      for roach in hardware_list:
-        if(roach["XPORT_status"] == 1):
-          xp = xport.Xport(roach["XPORT_address"], 10001)
-          flashmsgs.append("%s: %s"%(roach["nickname"], xp.power_down()))
-          xp.close()
-    
-    output = template('hardware', rows=hardware_list, flashmsgs=flashmsgs)
-    return output
+      # Turn all boards ON 
+      if(request.GET.get('power','').strip() == "Power all ON"):
+        for roach in hardware_list:
+          if(roach["XPORT_status"] == 1):
+            xp = xport.Xport(roach["XPORT_address"], 10001)
+            flashmsgs.append("%s: %s"%(roach["hostname"], xp.power_up()))
+            xp.close()
+            
+      # Turn all boards OFF       
+      if(request.GET.get('power','').strip() == "Power all OFF"):
+        for roach in hardware_list:
+          if(roach["XPORT_status"] == 1):
+            xp = xport.Xport(roach["XPORT_address"], 10001)
+            flashmsgs.append("%s: %s"%(roach["hostname"], xp.power_down()))
+            xp.close()
+      
+      
+      output = template('index', rows=hardware_list, flashmsgs=flashmsgs)
+      
+      return output
+    except:
+      output = template('index', rows=[], flashmsgs=flashmsgs)
+      return output
     
 
-# Roach Status: overview of single piece of kit
 @route('/status/:id')
 def view_hardware(id):
-    """ URL: *@route('/status/:id')*"""
+    """ URL: */status/:id*
+    
+    Provides overview of a single piece of kit.
+    """
     # Retrieve hardware list from database
     roach = dbget(id)
-
     flashmsgs = []
-    
-    # Get operating voltages etc from XPORT
-    xp = xport.Xport(roach["XPORT_address"], 10001)
 
-    xinfo = {
-    "serial"     : xp.get_serial(),
-    "id"         : xp.get_id(),
-    "boardtime"  : xp.get_board_time(),
-    "powerstate" : xp.get_power_state(),
-    "shutdown"   : xp.get_last_shutdown(),
-    "powergood"  : xp.get_power_good(),
-    "channels"   : xp.get_channels(),
-    "fanspeeds"  : xp.get_fan_speeds()
-    }
+    # Check if XPORT is responding or not
+    xping = ping.Host(roach["XPORT_address"])
+    xstatus = ping.pingHosts([xping])[0].status
 
-    xp.close()
+    if(xstatus == 1):
+      # Get operating voltages etc from XPORT
+      xp = xport.Xport(roach["XPORT_address"], 10001)
+      
+      xinfo = {
+      "serial"     : xp.get_serial(),
+      "id"         : xp.get_id(),
+      "boardtime"  : xp.get_board_time(),
+      "powerstate" : xp.get_power_state(),
+      "shutdown"   : xp.get_last_shutdown(),
+      "powergood"  : xp.get_power_good(),
+      "channels"   : xp.get_channels(),
+      "fanspeeds"  : xp.get_fan_speeds()
+      }
+      
+      xp.close()
+    else:
+      flashmsgs.append("Warning: Xport is not responding to pings. Detailed status not available.")
+      xinfo = 0
 
     output = template('status', roach=roach, flashmsgs=flashmsgs, xinfo=xinfo)
     return output
@@ -154,7 +162,10 @@ def view_hardware(id):
 # Power ON
 @route('/poweron/:id')
 def power_on(id):
-    """URL: *@route('/poweron/:id')* """
+    """URL: */poweron/:id* 
+    
+    Powers up a ROACH board using XPORT.
+    """
     # Retrieve hardware list from database
     roach = dbget(id)
     
@@ -185,7 +196,10 @@ def power_on(id):
 # Power OFF
 @route('/poweroff/:id')
 def power_off(id):
-    """URL: *@route('/poweroff/:id')* """
+    """URL: */poweroff/:id* 
+    
+    Powers off a ROACH board using XPORT.
+    """
     # Retrieve hardware list from database
     roach = dbget(id)
     
@@ -214,7 +228,10 @@ def power_off(id):
 # List registers (enhanced ?listdev)
 @route('/listreg/:id')
 def listreg(id):
-    """URL: *@route('/listreg')*"""
+    """URL: */listreg*
+    
+    Lists registers and applies basic sorting regex. Uses KATCP ?listdev command.
+    """
     # Retrieve hardware list from database
     roach = dbget(id)
     
@@ -229,17 +246,16 @@ def listreg(id):
         regname = request.GET.get('regname','').strip()
         regtype = request.GET.get('regtype','').strip()
         if(regtype == 'eval'):
-            regval = eval(request.GET.get('regval','').strip())
+            # Evaluate safely, at Griffin's request
+            regval = safe_eval(request.GET.get('regval','').strip())
         else:
             regval = int(request.GET.get('regval','').strip(), int(regtype))
         
-        
-        fpga.write_int(regname, regval)
-        flashmsg = "%s updated with value %i"%(regname,regval)
-    
-    # Check if reset is required
-    if(request.GET.get('reset','').strip()):
-        flashmsg = reset(fpga)
+        if(regval != 'Error'):
+          fpga.write_int(regname, regval)
+          flashmsg = "%s updated with value %i"%(regname,regval)
+        else:
+          flashmsg = "Error: I'm sorry, Dave, I can't let you do that..."
     
     # Check if there is a config to load
     if(request.GET.get('config','').strip()):
@@ -253,7 +269,6 @@ def listreg(id):
         registers = config.findall('register')
 
         for reg in registers:
-            #flashmsg.append("Writing value %s to register %s"%(reg.attrib['value'],reg.attrib['name']))
             writereg(fpga, reg.attrib['name'],reg.attrib['value'],reg.attrib['base'])
 
 
@@ -263,7 +278,7 @@ def listreg(id):
     pattern_snap64 = re.compile('[A-Za-z_0-9]+_bram_lsb$')
     pattern_sys    = re.compile('sys_\w+')
     pattern_outreg = re.compile('o_\w+')
-    pattern_excl   = re.compile("\w+(_ctrl|_addr|_rst|_en|_msb)")
+    pattern_excl   = re.compile("\w+(_ctrl|_addr|_rst|_msb)")
 
     snaplist, snap64list, syslist, reglist, outreglist = [], [], [], [], []
 
@@ -308,7 +323,10 @@ def listreg(id):
 # List bitstreams (?listbof)
 @route('/listbof/:id')
 def listbof(id):
-    """URL: *@route('/listbof')*"""
+    """URL: */listbof*
+    
+    Lists all bitstreams. Uses KATCP ?listbof command.
+    """
     # Retrieve hardware list from database
     roach = dbget(id)
     fpga = katcp_wrapper.FpgaClient(roach["IP_address"], port, timeout=10)
@@ -323,7 +341,10 @@ def listbof(id):
 # Program FPGA (?progdev)
 @route('/progdev/:id/:bitstream')
 def progdev(id, bitstream):
-    """URL: *@route('/progdev/:bitstream')*"""
+    """URL: */progdev/:bitstream*
+    
+    Executes KATCP ?progdev command to program FPGA.
+    """
     roach = dbget(id)
     flashmsg = ["FAILURE: progdev failed for some reason.", "error"]
     
@@ -338,30 +359,135 @@ def progdev(id, bitstream):
     output = template('listbof', boflist=boflist, roach=roach, flashmsg=flashmsg)
     return output        
 
-# ?read_int implementation for IO registers
-@route('/readint/:regname')
-def read_int(regname):
-    """URL: *@route('/readint/:regname')*"""
-    
-    fpga = katcp_wrapper.FpgaClient(roach, port, timeout=10)
-    time.sleep(1)
-    regdata = fpga.read_int(regname)
-    fpga.stop()
-    
-    
-    regdata = {
-        "name" : regname,
-        "data" : regdata
-    }
-    
-    output = template('read_int', register=regdata)
-    return output    
-    
-
 # snap block plotter (32 bit)
 @route('/snap/:id/:snap_id/bytes/:bytes/fmt/:fmt/op/:op')
 def snap32(id, snap_id, bytes, fmt, op):
-    """ URL: *@route('/snap/:snap_id/bytes/:bytes/fmt/:fmt')*"""
+    """ URL: */snap/:snap_id/bytes/:bytes/fmt/:fmt*
+    
+    Plots data from a snap register. Can be read in a variety of different formats.
+    Uses /ajax_snap to retrieve data (/ajax_snap docs).
+    """
+    roach = dbget(id)
+    output = template('plot_snap', roach=roach, snap_id=snap_id, fmt=fmt, bytes=bytes, op=op)
+    return output     
+
+############################
+##  Database management   ##
+############################
+
+# Create new database
+@route('/dbcreate')
+def create_db():
+  """URL: */dbcreate*
+  
+  Creates a new database.
+  """
+  
+  # Create database
+  flashmsgs = dbcreate()
+  
+  # Create a new (blank) roach record
+  roach = dbblank() 
+  
+  output = template('hardware_add', roach=roach, flashmsgs=flashmsgs)
+  return output 
+  
+
+# Edit piece of kit
+@route('/edit/:id', method='GET')
+def hardware_edit(id):
+  """URL: */edit/:id*
+  
+  Edits a piece of kit in the database.
+  """
+  id = int(id)
+  flashmsgs = []
+  roach = dbget(id)
+  
+  if request.GET.get('save','').strip():
+      # get hardware details from GET request
+      hostname = request.GET.get('hostname', '').strip()
+      MAC_address = request.GET.get('MAC_address', '').strip()
+      IP_address = request.GET.get('IP_address', '').strip()
+      XPORT_address = request.GET.get('XPORT_address', '').strip()
+      ZDOK0 = request.GET.get('ZDOK0', '').strip()
+      ZDOK1 = request.GET.get('ZDOK1', '').strip()
+      location = request.GET.get('location', '').strip()
+      notes = request.GET.get('notes', '').strip()
+      serial = request.GET.get('serial', '').strip()
+      firmware = request.GET.get('firmware', '').strip()
+      atype = request.GET.get('type', '').strip() # Type is a restricted word so using atype
+      
+      flashmsgs.append(
+        dbedit(id, hostname, MAC_address, IP_address, location, notes, serial, firmware, atype, XPORT_address, ZDOK0, ZDOK1)
+        )
+      output = template('hardware_edit', roach=roach, flashmsgs=flashmsgs)
+  else:
+      output = template('hardware_edit', roach=roach, flashmsgs=flashmsgs)
+  
+  return output
+
+# Add new piece of kit
+@route('/add')
+def hardware_add():
+  """URL: */add*
+  
+  Add a new piece of kit to the database.
+  """
+  flashmsgs = []
+  # Create a new (blank) roach record
+  roach = dbblank()
+
+  if request.GET.get('save','').strip():
+      # get hardware details from GET request
+      hostname = request.GET.get('hostname', '').strip()
+      MAC_address = request.GET.get('MAC_address', '').strip()
+      IP_address = request.GET.get('IP_address', '').strip()
+      XPORT_address = request.GET.get('XPORT_address', '').strip()
+      ZDOK0 = request.GET.get('ZDOK0', '').strip()
+      ZDOK1 = request.GET.get('ZDOK1', '').strip()
+      location = request.GET.get('location', '').strip()
+      notes = request.GET.get('notes', '').strip()
+      serial = request.GET.get('serial', '').strip()
+      firmware = request.GET.get('firmware', '').strip()
+      atype = request.GET.get('type', '').strip() # Type is a restricted word so using atype
+      
+      flashmsgs.append(
+        dbadd(hostname, MAC_address, IP_address, location, notes, serial, firmware, atype, XPORT_address, ZDOK0, ZDOK1)
+        )
+      output = template('hardware_add', roach=roach, flashmsgs=flashmsgs)
+      redirect("/")
+  else:
+      output = template('hardware_add', roach=roach, flashmsgs=flashmsgs)
+      return output
+
+# Delete piece of kit
+@route('/delete/:id')
+def hardware_edit(id):
+  """URL: */delete/:id*
+  
+  Delete a piece of kit from the database.
+  """
+  flashmsgs = []
+  flashmsgs.append(
+    dbdelete(id)
+    )
+    
+  output = template('simpleflash', flashmsgs=flashmsgs)
+  return output
+  
+
+############################
+##  AJAX request handlers ##
+############################
+
+@route('/ajax_snap/:id/:snap_id/bytes/:bytes/fmt/:fmt/op/:op')
+def snap32(id, snap_id, bytes, fmt, op):
+    """ URL: *ajax_snap/:snap_id/bytes/:bytes/fmt/:fmt*
+    
+    AJAX request handler for /snap plotting page. Returns JSON data for
+    the Flot javascript plotting library to plot.
+    """
     roach = dbget(id)
     fpga = katcp_wrapper.FpgaClient(roach["IP_address"], port, timeout=10)
     time.sleep(0.1)
@@ -386,30 +512,14 @@ def snap32(id, snap_id, bytes, fmt, op):
             
         fpga.stop()
 
-        # Generate a graph using matplotlib
-        #import matplotlib
-        #matplotlib.use('Agg') # We don't want to send to X, but to a backend
-        #import matplotlib.pyplot as plt
-        #fig = plt.figure()
-        #ax = fig.add_subplot(111)
-        #ax.plot(data)
-        #ax.set_title(snap_id)
-        #ax.set_xlim(0,len(data))
-        #fig.savefig('files/temp.png')
-        
         # Generate data for Flot (javascript plotting library)
-        # Need to reduce data down to 1024 points
-        
-        
-        # xvals = 200.0/1024 * np.cumsum(np.ones(1024)) + 100
-        
+        # Need to reduce data down to 1024 points      
         if(len(data) > 1024):
             xvals = len(data)/1024 * np.cumsum(np.ones(1024))
             yvals = np.sum(data.reshape([1024, len(data)/1024]), axis=1)
         else:
             xvals = np.cumsum(np.ones(len(data)))
             yvals = data
-
        
         # Apply numpy operations - passed on 'op' variable
         if(op == 'real'):
@@ -431,23 +541,25 @@ def snap32(id, snap_id, bytes, fmt, op):
         data[:,0] = xvals
         data[:,1] = yvals                
 
-
-        output = template('plot_snap', roach=roach, snap_id=snap_id, data=data, fmt=fmt, bytes=bytes, op=op)
-        return output     
+        # Convert numpy array into a python dictionary
+        # Bottle will pass this as a JSON array to the requester
+        output = {'data' : [list(pair) for pair in data] }
+        return output
     else:
         fpga.stop()
         return "<p> Something went wrong...</p>"
 
-##########################
-##  BEGINNING OF MAIN  ###
-##########################
+
+#########################
+##  BEGINNING OF MAIN  ##
+#########################
         
 if __name__ == '__main__':
 
     # Option parsing to allow command line arguments to be parsed
     from optparse import OptionParser
     p = OptionParser()
-    p.set_usage('caspergui.py [options]')
+    p.set_usage('roachnest.py [options]')
     p.set_description(__doc__)
     p.add_option("-k", "--katcpport", dest="port", type="int", default=7147,
                  help="Select KATCP port. Default is 7147")
@@ -466,5 +578,6 @@ if __name__ == '__main__':
     # Development mode
     debug(True)
     
-    #Start bottle server
-    run(host=hostip, port=hostport, reloader=True)
+    # Start bottle server
+    # See: http://bottlepy.org/docs/dev/tutorial_app.html#server-setup
+    run(host=hostip, port=hostport, reloader=True, server=PasteServer)

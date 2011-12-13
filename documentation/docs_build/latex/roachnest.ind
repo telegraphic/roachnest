@@ -1,0 +1,104 @@
+\begin{theindex}
+\def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
+
+  \bigletter B
+  \item bin2dec() (in module roachnest\_helpers), \hyperpage{10}
+
+  \indexspace
+  \bigletter C
+  \item clear\_crashlog() (xport.Xport method), \hyperpage{14}
+  \item close() (xport.Xport method), \hyperpage{14}
+  \item connect() (xport.Xport method), \hyperpage{14}
+  \item create\_db() (in module roachnest), \hyperpage{9}
+
+  \indexspace
+  \bigletter D
+  \item dbadd() (in module roachnest\_helpers), \hyperpage{10}
+  \item dbblank() (in module roachnest\_helpers), \hyperpage{11}
+  \item dbcreate() (in module roachnest\_helpers), \hyperpage{11}
+  \item dbdelete() (in module roachnest\_helpers), \hyperpage{11}
+  \item dbedit() (in module roachnest\_helpers), \hyperpage{11}
+  \item dbget() (in module roachnest\_helpers), \hyperpage{12}
+  \item dbgetall() (in module roachnest\_helpers), \hyperpage{12}
+  \item dec2bin() (in module roachnest\_helpers), \hyperpage{12}
+  \item dec2hex() (in module roachnest\_helpers), \hyperpage{12}
+  \item download() (in module roachnest), \hyperpage{9}
+
+  \indexspace
+  \bigletter E
+  \item execute() (in module ping), \hyperpage{13}
+
+  \indexspace
+  \bigletter F
+  \item flush() (xport.Xport method), \hyperpage{14}
+
+  \indexspace
+  \bigletter G
+  \item get\_board\_time() (xport.Xport method), \hyperpage{14}
+  \item get\_channels() (xport.Xport method), \hyperpage{14}
+  \item get\_fan\_speeds() (xport.Xport method), \hyperpage{14}
+  \item get\_id() (xport.Xport method), \hyperpage{14}
+  \item get\_last\_shutdown() (xport.Xport method), \hyperpage{15}
+  \item get\_power\_good() (xport.Xport method), \hyperpage{15}
+  \item get\_power\_state() (xport.Xport method), \hyperpage{15}
+  \item get\_serial() (xport.Xport method), \hyperpage{15}
+
+  \indexspace
+  \bigletter H
+  \item hardware\_add() (in module roachnest), \hyperpage{9}
+  \item hardware\_edit() (in module roachnest), \hyperpage{9}
+  \item hex2dec() (in module roachnest\_helpers), \hyperpage{13}
+  \item Host (class in ping), \hyperpage{13}
+
+  \indexspace
+  \bigletter L
+  \item list\_hardware() (in module roachnest), \hyperpage{9}
+  \item listbof() (in module roachnest), \hyperpage{9}
+  \item listreg() (in module roachnest), \hyperpage{9}
+
+  \indexspace
+  \bigletter P
+  \item ping (module), \hyperpage{13}
+  \item ping() (in module ping), \hyperpage{13}
+  \item pingHosts() (in module ping), \hyperpage{14}
+  \item power\_down() (xport.Xport method), \hyperpage{15}
+  \item power\_off() (in module roachnest), \hyperpage{10}
+  \item power\_on() (in module roachnest), \hyperpage{10}
+  \item power\_up() (xport.Xport method), \hyperpage{15}
+  \item printResults() (in module ping), \hyperpage{14}
+  \item progdev() (in module roachnest), \hyperpage{10}
+
+  \indexspace
+  \bigletter R
+  \item read() (xport.Xport method), \hyperpage{15}
+  \item roachnest (module), \hyperpage{9}
+  \item roachnest\_helpers (module), \hyperpage{10}
+
+  \indexspace
+  \bigletter S
+  \item safe\_eval() (in module roachnest\_helpers), \hyperpage{13}
+  \item server\_static() (in module roachnest), \hyperpage{10}
+  \item snap32() (in module roachnest), \hyperpage{10}
+
+  \indexspace
+  \bigletter T
+  \item toggle\_config\_h() (xport.Xport method), \hyperpage{15}
+  \item toggle\_power\_on\_reset() (xport.Xport method), \hyperpage{15}
+
+  \indexspace
+  \bigletter V
+  \item view\_hardware() (in module roachnest), \hyperpage{10}
+
+  \indexspace
+  \bigletter W
+  \item warm\_rst() (xport.Xport method), \hyperpage{15}
+  \item write() (xport.Xport method), \hyperpage{15}
+  \item writereg() (in module roachnest\_helpers), \hyperpage{13}
+
+  \indexspace
+  \bigletter X
+  \item Xport (class in xport), \hyperpage{14}
+  \item xport (module), \hyperpage{14}
+  \item xportError, \hyperpage{15}
+
+\end{theindex}

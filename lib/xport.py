@@ -2,7 +2,7 @@
 # encoding: utf-8
 """
 xport.py
-============
+========
 
 Created by Danny Price, 03 October 2011.\n
 Based on roach_monitor.py at:
@@ -13,10 +13,12 @@ ROACH has an onboard, fully independent management subsystem that can be accesse
 The X-port system monitors voltages and temperatures and will shut down the board 
 if these are out of specification. A log is kept of the shutdown cause, its value and time.
 
-This class is still under pretty heavy development so should be considered very beta and used
-at your own risk.
-
 """
+
+# Python metadata
+__author__    = "Danny Price"
+__license__   = "GNU GPL"
+__version__   = "1.0"
 
 import socket,struct,os,sys,time
 

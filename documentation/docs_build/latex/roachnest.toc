@@ -1,0 +1,18 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}Copyright \& Licensing}{1}{chapter.1}
+\contentsline {chapter}{\numberline {2}Introduction}{3}{chapter.2}
+\contentsline {chapter}{\numberline {3}Screenshots}{5}{chapter.3}
+\contentsline {chapter}{\numberline {4}Getting Started}{7}{chapter.4}
+\contentsline {chapter}{\numberline {5}Module Listing}{9}{chapter.5}
+\contentsline {section}{\numberline {5.1}roachnest.py}{9}{section.5.1}
+\contentsline {section}{\numberline {5.2}roachnest\_helpers.py}{10}{section.5.2}
+\contentsline {paragraph}{Notes}{11}{paragraph*.21}
+\contentsline {paragraph}{Notes}{12}{paragraph*.25}
+\contentsline {paragraph}{Notes}{12}{paragraph*.27}
+\contentsline {section}{\numberline {5.3}ping.py}{13}{section.5.3}
+\contentsline {paragraph}{Notes}{13}{paragraph*.36}
+\contentsline {section}{\numberline {5.4}xport.py}{14}{section.5.4}
+\contentsline {paragraph}{Methods}{14}{paragraph*.42}
+\contentsline {chapter}{Python Module Index}{17}{section*.63}
+\contentsline {chapter}{Python Module Index}{19}{section*.64}
+\contentsline {chapter}{Index}{21}{section*.65}

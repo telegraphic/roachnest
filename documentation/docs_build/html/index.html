@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -6,8 +7,8 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>CASPERGUI Documentation &mdash; CASPERGUI v1 documentation</title>
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <title>ROACHNEST Documentation &mdash; ROACHNEST v1 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -21,7 +22,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="CASPERGUI v1 documentation" href="#" /> 
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="ROACHNEST v1 documentation" href="#" /> 
   </head>
   <body>
     <div class="related">
@@ -36,7 +38,7 @@
         <li class="right" >
           <a href="np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="#">CASPERGUI v1 documentation</a> &raquo;</li> 
+        <li><a href="#">ROACHNEST v1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -45,12 +47,13 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="caspergui-documentation">
-<h1>CASPERGUI Documentation<a class="headerlink" href="#caspergui-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="roachnest-documentation">
+<h1>ROACHNEST Documentation<a class="headerlink" href="#roachnest-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="copyright-licensing">
 <h2>Copyright &amp; Licensing<a class="headerlink" href="#copyright-licensing" title="Permalink to this headline">¶</a></h2>
-<p><strong>CASPERGUI: A browser based user interface for monitor &amp; control of CASPER hardware</strong></p>
+<p><strong>ROACHNEST: A browser based user interface for monitor &amp; control of CASPER hardware</strong></p>
 <p><em>Copyright (C) 2011  Danny Price</em></p>
+<p><strong>Everything I&#8217;ve written:</strong> GNU General Public License (GPL)</p>
 <p>This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -65,12 +68,14 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 <ul class="simple">
 </ul>
 </div>
+<p><strong>Everything else:</strong> As per author&#8217;s original licensing terms.
+Bottle.py and Flot are MIT licensed, Blueprint is a modified MIT license,
+sqlite3 is public domain.</p>
 </div>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>Caspergui is a browser based Graphical User Interface (GUI) for control of CASPER hardware.
-This script utilises the KATCP python libraries, the bottle web framework,
-and sqlite3:</p>
+<p>Roachnest is a browser based Graphical User Interface (GUI) for control of CASPER hardware.
+This script utilises the KATCP python libraries, the bottle web framework, and sqlite3:</p>
 <blockquote>
 <div><ul class="simple">
 <li><a class="reference external" href="http://casper.berkeley.edu/wiki/KATCP">http://casper.berkeley.edu/wiki/KATCP</a></li>
@@ -85,18 +90,42 @@ and sqlite3:</p>
 <li><a class="reference external" href="http://code.google.com/p/flot/">http://code.google.com/p/flot/</a></li>
 </ul>
 </div></blockquote>
-<p>This is still under heavy development, with features being added / removed sporadically. Use at your own risk, and be aware that I&#8217;ve done no security checking (so don&#8217;t run this on the world wide web).</p>
+<p><strong>Warning:</strong> I strongly suggest that this is available only through an internal network and
+is not made accessible via the WWW. Use at your own risk.</p>
 </div>
-<div class="section" id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p>Assuming you&#8217;ve got the dependencies sorted, all you should need to do is run:</p>
-<div class="highlight-python"><pre>&gt;&gt; python caspergui.py &lt;ROACH_NAME or IP&gt; [options]</pre>
+<div class="section" id="screenshots">
+<h2>Screenshots<a class="headerlink" href="#screenshots" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/screenshot_index.png"><img alt="Index page - screenshot" src="_images/screenshot_index.png" style="width: 333.9px; height: 275.7px;" /></a>
+<p class="caption">Homepage: hardware management</p>
 </div>
-<p>for example, I&#8217;ve got an entry in my /etc/hosts file for &#8216;junebug&#8217;, whose IP address is 192.168.126.3. I would
-run:</p>
-<div class="highlight-python"><pre>&gt;&gt; python caspergui.py junebug</pre>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/screenshot_status.png"><img alt="Status page - screenshot" src="_images/screenshot_status.png" style="width: 334.5px; height: 348.9px;" /></a>
+<p class="caption">Detailed status and board control.</p>
 </div>
-<p>This would start up a webserver on localhost:8080, and junebug is set as the roach to send and receive queries from. The options available are:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/screenshot_plotsnap.png"><img alt="Plot snap - screenshot" src="_images/screenshot_plotsnap.png" style="width: 330.9px; height: 373.2px;" /></a>
+<p class="caption">Javascript plotting of snap BRAMs.</p>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/screenshot_listreg.png"><img alt="List available registers - screenshot" src="_images/screenshot_listreg.png" style="width: 334.5px; height: 348.9px;" /></a>
+<p class="caption">Reading and writing shared registers.</p>
+</div>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>The first thing you&#8217;ll need to do is to satisy the dependencies. You&#8217;ll need:</p>
+<blockquote>
+<div>os, sys, time, re, struct, <a class="reference external" href="http://docs.python.org/library/sqlite3.html">sqlite3</a>, <a class="reference external" href="http://bottlepy.org/docs/dev/">bottle</a>, <a class="reference external" href="http://numpy.scipy.org/">numpy</a>, <a class="reference external" href="http://pypi.python.org/pypi/katcp/0.3.4">katcp</a>, <a class="reference external" href="http://pythonpaste.org/">paste</a>, <a class="reference external" href="http://lxml.de/">lxml</a></div></blockquote>
+<p>Note that <a class="reference external" href="http://pythonpaste.org/">paste</a> and <a class="reference external" href="http://lxml.de/">lxml</a> are optional: paste improves webserver performance by using threading, and
+lxml is for parsing configuration files &#8211; although these won&#8217;t appear until a future release!</p>
+<p>After downloading the files, you should edit <em>lib/config.py</em>, and check
+that you&#8217;re happy with the configuration. Note that you can change the page titles and the logo
+in this file.</p>
+<p>Next, assuming you&#8217;ve got the dependencies sorted, all you should need to do is run:</p>
+<div class="highlight-python"><pre>&gt;&gt; python roachnest.py  [options]</pre>
+</div>
+<p>This would start up a webserver on localhost:8080. The options available are:</p>
 <div class="highlight-python"><pre>Options:
   -h, --help            show this help message and exit
   -p PORT, --port=PORT  Select KATCP port. Default is 7147
@@ -106,143 +135,515 @@ run:</p>
   -P HOSTPORT, --hostport=HOSTPORT
                         change host port for server. Default is 8080</pre>
 </div>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="_images/picture.jpg"><img alt="alternate text" src="_images/picture.jpg" style="width: 249.5px; height: 300.0px;" /></a>
-<p class="caption">apparently this will show up as a caption</p>
+<p>Once the webserver is up and running, open a browser up and surf over to localhost:8080, or if you&#8217;ve changed
+the IP address and port, type these in instead (eg. 192.168.126.6:8888). If you want the page to be viewable
+over a network, you&#8217;ll have to use the <em>&#8211;hostip</em> option and point this to the IP address of your ethernet card.</p>
 </div>
-</div>
-<div class="section" id="module-caspergui">
-<span id="module-listing"></span><h2>Module Listing<a class="headerlink" href="#module-caspergui" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="caspergui-py">
-<h3>caspergui.py<a class="headerlink" href="#caspergui-py" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-roachnest">
+<span id="module-listing"></span><h2>Module Listing<a class="headerlink" href="#module-roachnest" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="roachnest-py">
+<h3>roachnest.py<a class="headerlink" href="#roachnest-py" title="Permalink to this headline">¶</a></h3>
 <p>Created by Danny Price on 2011-01-12.</p>
 <p>Copyright (c) 2011 The University of Oxford. All rights reserved.</p>
-<p>Caspergui is a browser based Graphical User Interface (GUI) for control of CASPER hardware. This script needs lolkatcp.py to run, which houses all the katcp commands for data capture, plotting etc.</p>
-<p>This is still under heavy development. Use at your own risk, and be aware that I&#8217;ve done no security checking (so don&#8217;t run this on the world wide web).</p>
+<p>Roachnest is a browser based Graphical User Interface (GUI) for control of CASPER hardware.
+It facilitates basic monitor and control tasks, such as turning boards on and off via the XPORT, 
+reprogramming the FPGA, reading and writing registers, and plotting the contents of shared BRAMS 
+(snap blocks).</p>
+<p>Roachnest also provides basic hardware management through a small sqlite database. Users can add
+notes, specify IP addresses, hostnames, and other basic information necessary to keep track of
+hardware specifics.</p>
+<p><strong>License:</strong> GNU GPL: <a class="reference external" href="http://www.gnu.org/copyleft/gpl.html">http://www.gnu.org/copyleft/gpl.html</a></p>
+<p><strong>Warning:</strong> I strongly suggest that this is available only through an internal network and 
+is not made accessible via the WWW. Use at your own risk.</p>
 <dl class="function">
-<dt id="caspergui.bram">
-<tt class="descclassname">caspergui.</tt><tt class="descname">bram</tt><big>(</big><em>snap_id</em>, <em>bytes</em>, <em>fmt</em><big>)</big><a class="headerlink" href="#caspergui.bram" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/bram/:snap_id/bytes/:bytes/fmt/:fmt&#8217;)</em></p>
+<dt id="roachnest.create_db">
+<tt class="descclassname">roachnest.</tt><tt class="descname">create_db</tt><big>(</big><big>)</big><a class="headerlink" href="#roachnest.create_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>/dbcreate</em></p>
+<p>Creates a new database.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.config">
-<tt class="descclassname">caspergui.</tt><tt class="descname">config</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#caspergui.config" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/config/:filename&#8217;)</em></p>
+<dt id="roachnest.download">
+<tt class="descclassname">roachnest.</tt><tt class="descname">download</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#roachnest.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>/download/:filename</em></p>
+<p>Forces download of static files.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.download">
-<tt class="descclassname">caspergui.</tt><tt class="descname">download</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#caspergui.download" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/download/:filename&#8217;)</em></p>
+<dt id="roachnest.hardware_add">
+<tt class="descclassname">roachnest.</tt><tt class="descname">hardware_add</tt><big>(</big><big>)</big><a class="headerlink" href="#roachnest.hardware_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>/add</em></p>
+<p>Add a new piece of kit to the database.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.hardware_add">
-<tt class="descclassname">caspergui.</tt><tt class="descname">hardware_add</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.hardware_add" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/add&#8217;, method=&#8217;GET&#8217;)</em></p>
+<dt id="roachnest.hardware_edit">
+<tt class="descclassname">roachnest.</tt><tt class="descname">hardware_edit</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#roachnest.hardware_edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>/delete/:id</em></p>
+<p>Delete a piece of kit from the database.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.hardware_delete">
-<tt class="descclassname">caspergui.</tt><tt class="descname">hardware_delete</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#caspergui.hardware_delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/delete/:id&#8217;)</em></p>
+<dt id="roachnest.list_hardware">
+<tt class="descclassname">roachnest.</tt><tt class="descname">list_hardware</tt><big>(</big><big>)</big><a class="headerlink" href="#roachnest.list_hardware" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>/</em></p>
+<p>Index page. Lists all boards in the hardware database.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.hardware_edit">
-<tt class="descclassname">caspergui.</tt><tt class="descname">hardware_edit</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#caspergui.hardware_edit" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/edit/:id&#8217;, method=&#8217;GET&#8217;)</em></p>
+<dt id="roachnest.listbof">
+<tt class="descclassname">roachnest.</tt><tt class="descname">listbof</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#roachnest.listbof" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>/listbof</em></p>
+<p>Lists all bitstreams. Uses KATCP ?listbof command.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.index">
-<tt class="descclassname">caspergui.</tt><tt class="descname">index</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.index" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/index.html&#8217;)</em></p>
+<dt id="roachnest.listreg">
+<tt class="descclassname">roachnest.</tt><tt class="descname">listreg</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#roachnest.listreg" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>/listreg</em></p>
+<p>Lists registers and applies basic sorting regex. Uses KATCP ?listdev command.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.interleavr">
-<tt class="descclassname">caspergui.</tt><tt class="descname">interleavr</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.interleavr" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/interleaved&#8217;)</em></p>
+<dt id="roachnest.power_off">
+<tt class="descclassname">roachnest.</tt><tt class="descname">power_off</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#roachnest.power_off" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>/poweroff/:id</em></p>
+<p>Powers off a ROACH board using XPORT.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.list_hardware">
-<tt class="descclassname">caspergui.</tt><tt class="descname">list_hardware</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.list_hardware" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/hardware&#8217;)</em></p>
+<dt id="roachnest.power_on">
+<tt class="descclassname">roachnest.</tt><tt class="descname">power_on</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#roachnest.power_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>/poweron/:id</em></p>
+<p>Powers up a ROACH board using XPORT.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.listbof">
-<tt class="descclassname">caspergui.</tt><tt class="descname">listbof</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.listbof" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/listbof&#8217;)</em></p>
+<dt id="roachnest.progdev">
+<tt class="descclassname">roachnest.</tt><tt class="descname">progdev</tt><big>(</big><em>id</em>, <em>bitstream</em><big>)</big><a class="headerlink" href="#roachnest.progdev" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>/progdev/:bitstream</em></p>
+<p>Executes KATCP ?progdev command to program FPGA.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.listreg">
-<tt class="descclassname">caspergui.</tt><tt class="descname">listreg</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.listreg" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/listreg&#8217;)</em></p>
+<dt id="roachnest.server_static">
+<tt class="descclassname">roachnest.</tt><tt class="descname">server_static</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#roachnest.server_static" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>/files/:path#.+#</em></p>
+<p>Returns static files (eg images, css, scripts, favicons).</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.power_on">
-<tt class="descclassname">caspergui.</tt><tt class="descname">power_on</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.power_on" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/poweron&#8217;)</em></p>
+<dt id="roachnest.snap32">
+<tt class="descclassname">roachnest.</tt><tt class="descname">snap32</tt><big>(</big><em>id</em>, <em>snap_id</em>, <em>bytes</em>, <em>fmt</em>, <em>op</em><big>)</big><a class="headerlink" href="#roachnest.snap32" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>ajax_snap/:snap_id/bytes/:bytes/fmt/:fmt</em></p>
+<p>AJAX request handler for /snap plotting page. Returns JSON data for
+the Flot javascript plotting library to plot.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.progdev">
-<tt class="descclassname">caspergui.</tt><tt class="descname">progdev</tt><big>(</big><em>bitstream</em><big>)</big><a class="headerlink" href="#caspergui.progdev" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/progdev/:bitstream&#8217;)</em></p>
+<dt id="roachnest.view_hardware">
+<tt class="descclassname">roachnest.</tt><tt class="descname">view_hardware</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#roachnest.view_hardware" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL: <em>/status/:id</em></p>
+<p>Provides overview of a single piece of kit.</p>
+</dd></dl>
+
+</div>
+<span class="target" id="module-roachnest_helpers"></span><div class="section" id="roachnest-helpers-py">
+<h3>roachnest_helpers.py<a class="headerlink" href="#roachnest-helpers-py" title="Permalink to this headline">¶</a></h3>
+<p>Created by Danny Price on 2011-01-12.</p>
+<p>Copyright (c) 2011 The University of Oxford. All rights reserved.</p>
+<p>Helper functions and classes for roachnest.</p>
+<dl class="function">
+<dt id="roachnest_helpers.bin2dec">
+<tt class="descclassname">roachnest_helpers.</tt><tt class="descname">bin2dec</tt><big>(</big><em>binary</em><big>)</big><a class="headerlink" href="#roachnest_helpers.bin2dec" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the decimal string representation of <em>binary</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>binary: binary string</strong> :</p>
+<blockquote class="last">
+<div><p>binary string to reinterpret as decimal</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.read_int">
-<tt class="descclassname">caspergui.</tt><tt class="descname">read_int</tt><big>(</big><em>regname</em><big>)</big><a class="headerlink" href="#caspergui.read_int" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/readint/:regname&#8217;)</em></p>
+<dt id="roachnest_helpers.dbadd">
+<tt class="descclassname">roachnest_helpers.</tt><tt class="descname">dbadd</tt><big>(</big><em>hostname</em>, <em>MAC_address</em>, <em>IP_address</em>, <em>location</em>, <em>notes</em>, <em>serial</em>, <em>firmware</em>, <em>atype</em>, <em>XPORT_address</em>, <em>ZDOK0</em>, <em>ZDOK1</em><big>)</big><a class="headerlink" href="#roachnest_helpers.dbadd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new piece of hardware to the database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>hostname: string</strong> :</p>
+<blockquote>
+<div><p>Hostname of piece of hardware</p>
+</div></blockquote>
+<p><strong>MAC_address: string</strong> :</p>
+<blockquote>
+<div><p>MAC address of KATCP interface</p>
+</div></blockquote>
+<p><strong>IP_address: string</strong> :</p>
+<blockquote>
+<div><p>IP address of KATCP interface.</p>
+</div></blockquote>
+<p><strong>location: string</strong> :</p>
+<blockquote>
+<div><p>Physical location of the hardware (eg Oxford DSP lab)</p>
+</div></blockquote>
+<p><strong>notes: string</strong> :</p>
+<blockquote>
+<div><p>Any relevant notes that you may have</p>
+</div></blockquote>
+<p><strong>serial: string</strong> :</p>
+<blockquote>
+<div><p>The serial number of the hardware.</p>
+</div></blockquote>
+<p><strong>firmware:</strong> :</p>
+<blockquote>
+<div><p>Firmware revision information</p>
+</div></blockquote>
+<p><strong>atype: string</strong> :</p>
+<blockquote>
+<div><p>What type of hardware is it? Options are generally ROACH, ROACH2, iBOB or BEE2</p>
+</div></blockquote>
+<p><strong>XPORT_address: string</strong> :</p>
+<blockquote>
+<div><p>IP address of XPORT interface.</p>
+</div></blockquote>
+<p><strong>ZDOK0: string</strong> :</p>
+<blockquote>
+<div><p>Notes about what is installed in ZDOK 0.</p>
+</div></blockquote>
+<p><strong>ZDOK1: string</strong> :</p>
+<blockquote class="last">
+<div><p>Notes about what is installed in ZDOK 1.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.server_static">
-<tt class="descclassname">caspergui.</tt><tt class="descname">server_static</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#caspergui.server_static" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/files/:path#.+#&#8217;)</em></p>
+<dt id="roachnest_helpers.dbblank">
+<tt class="descclassname">roachnest_helpers.</tt><tt class="descname">dbblank</tt><big>(</big><big>)</big><a class="headerlink" href="#roachnest_helpers.dbblank" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a blank hardware dictionary.</p>
+<p>Returns a BLANK python dictionary with the following entries:
+id, hostname, MAC_address, IP_address, location, notes, serial, firmware, type,
+XPORT_address, ZDOK0, ZDOK1, status, XPORT_status.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.snap32">
-<tt class="descclassname">caspergui.</tt><tt class="descname">snap32</tt><big>(</big><em>snap_id</em>, <em>bytes</em>, <em>fmt</em><big>)</big><a class="headerlink" href="#caspergui.snap32" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/snap/:snap_id/bytes/:bytes/fmt/:fmt&#8217;)</em></p>
+<dt id="roachnest_helpers.dbcreate">
+<tt class="descclassname">roachnest_helpers.</tt><tt class="descname">dbcreate</tt><big>(</big><big>)</big><a class="headerlink" href="#roachnest_helpers.dbcreate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new database.</p>
+<p class="rubric">Notes</p>
+<p>This function should only be called once, for initial database setup.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.snap64">
-<tt class="descclassname">caspergui.</tt><tt class="descname">snap64</tt><big>(</big><em>snap_id</em>, <em>bytes</em><big>)</big><a class="headerlink" href="#caspergui.snap64" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/snap64/:snap_id/bytes/:bytes&#8217;)</em></p>
+<dt id="roachnest_helpers.dbdelete">
+<tt class="descclassname">roachnest_helpers.</tt><tt class="descname">dbdelete</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#roachnest_helpers.dbdelete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a piece of hardware from the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>id: int</strong> :</p>
+<blockquote class="last">
+<div><p>Primary key (ID number) of record</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.spectrometer">
-<tt class="descclassname">caspergui.</tt><tt class="descname">spectrometer</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.spectrometer" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/spectrometer&#8217;)</em></p>
+<dt id="roachnest_helpers.dbedit">
+<tt class="descclassname">roachnest_helpers.</tt><tt class="descname">dbedit</tt><big>(</big><em>id</em>, <em>hostname</em>, <em>MAC_address</em>, <em>IP_address</em>, <em>location</em>, <em>notes</em>, <em>serial</em>, <em>firmware</em>, <em>atype</em>, <em>XPORT_address</em>, <em>ZDOK0</em>, <em>ZDOK1</em><big>)</big><a class="headerlink" href="#roachnest_helpers.dbedit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit an exisiting piece of hardware in the database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>id: int</strong> :</p>
+<blockquote>
+<div><p>Primary key (ID number) of record</p>
+</div></blockquote>
+<p><strong>hostname: string</strong> :</p>
+<blockquote>
+<div><p>Hostname of piece of hardware</p>
+</div></blockquote>
+<p><strong>MAC_address: string</strong> :</p>
+<blockquote>
+<div><p>MAC address of KATCP interface</p>
+</div></blockquote>
+<p><strong>IP_address: string</strong> :</p>
+<blockquote>
+<div><p>IP address of KATCP interface.</p>
+</div></blockquote>
+<p><strong>location: string</strong> :</p>
+<blockquote>
+<div><p>Physical location of the hardware (eg Oxford DSP lab)</p>
+</div></blockquote>
+<p><strong>notes: string</strong> :</p>
+<blockquote>
+<div><p>Any relevant notes that you may have</p>
+</div></blockquote>
+<p><strong>serial: string</strong> :</p>
+<blockquote>
+<div><p>The serial number of the hardware.</p>
+</div></blockquote>
+<p><strong>firmware:</strong> :</p>
+<blockquote>
+<div><p>Firmware revision information</p>
+</div></blockquote>
+<p><strong>atype: string</strong> :</p>
+<blockquote>
+<div><p>What type of hardware is it? Options are generally ROACH, ROACH2, iBOB or BEE2</p>
+</div></blockquote>
+<p><strong>XPORT_address: string</strong> :</p>
+<blockquote>
+<div><p>IP address of XPORT interface.</p>
+</div></blockquote>
+<p><strong>ZDOK0: string</strong> :</p>
+<blockquote>
+<div><p>Notes about what is installed in ZDOK 0.</p>
+</div></blockquote>
+<p><strong>ZDOK1: string</strong> :</p>
+<blockquote class="last">
+<div><p>Notes about what is installed in ZDOK 1.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.upload">
-<tt class="descclassname">caspergui.</tt><tt class="descname">upload</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.upload" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/upload/do&#8217;, method=&#8217;POST&#8217;)</em></p>
+<dt id="roachnest_helpers.dbget">
+<tt class="descclassname">roachnest_helpers.</tt><tt class="descname">dbget</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#roachnest_helpers.dbget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves a hardware record from the hardware database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>id: integer</strong> :</p>
+<blockquote class="last">
+<div><p>primary key (ID number) of database entry</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Queries database and returns a python dictionary with the following entries:
+id, hostname, MAC_address, IP_address, location, notes, serial, firmware, type,
+XPORT_address, ZDOK0, ZDOK1, status, XPORT_status.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.uploader">
-<tt class="descclassname">caspergui.</tt><tt class="descname">uploader</tt><big>(</big><big>)</big><a class="headerlink" href="#caspergui.uploader" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/upload&#8217;)</em></p>
+<dt id="roachnest_helpers.dbgetall">
+<tt class="descclassname">roachnest_helpers.</tt><tt class="descname">dbgetall</tt><big>(</big><big>)</big><a class="headerlink" href="#roachnest_helpers.dbgetall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves all records from the database.</p>
+<p class="rubric">Notes</p>
+<p>Retrieves all records from the database. Returns a list of python dictionaries, with
+name: value pairs that correspond to database columns. Each python dictionary 
+contains the following entries:
+id, hostname, MAC_address, IP_address, location, notes, serial, firmware, type,
+XPORT_address, ZDOK0, ZDOK1, status, XPORT_status.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="caspergui.view_hardware">
-<tt class="descclassname">caspergui.</tt><tt class="descname">view_hardware</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#caspergui.view_hardware" title="Permalink to this definition">¶</a></dt>
-<dd><p>URL: <em>&#64;route(&#8216;/hardware&#8217;)</em></p>
+<dt id="roachnest_helpers.dec2bin">
+<tt class="descclassname">roachnest_helpers.</tt><tt class="descname">dec2bin</tt><big>(</big><em>decimal</em><big>)</big><a class="headerlink" href="#roachnest_helpers.dec2bin" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the binary string representation of a <em>decimal</em>
+Parameters
+&#8212;&#8212;&#8212;-
+decimal: decimal string</p>
+<blockquote>
+<div>decimal string to reinterpret as binary</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="roachnest_helpers.dec2hex">
+<tt class="descclassname">roachnest_helpers.</tt><tt class="descname">dec2hex</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#roachnest_helpers.dec2hex" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the hexadecimal string representation of integer <em>n</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>n: hexadecimal string</strong> :</p>
+<blockquote class="last">
+<div><p>hexadecimal string to reinterpret as decimal</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="roachnest_helpers.hex2dec">
+<tt class="descclassname">roachnest_helpers.</tt><tt class="descname">hex2dec</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#roachnest_helpers.hex2dec" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the integer value of a hexadecimal string <em>s</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>s: decimal string</strong> :</p>
+<blockquote class="last">
+<div><p>decimal string to reinterpret as hexadecimal</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="roachnest_helpers.safe_eval">
+<tt class="descclassname">roachnest_helpers.</tt><tt class="descname">safe_eval</tt><big>(</big><em>command</em><big>)</big><a class="headerlink" href="#roachnest_helpers.safe_eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>A safer version of the eval() command, using ast.literal_eval
+TODO: make this more functional, at the moment it&#8217;s pretty useless.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>command: string</strong> :</p>
+<blockquote class="last">
+<div><p>command to evaluate (e.g. &#8216;2**10-1&#8217;).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="roachnest_helpers.writereg">
+<tt class="descclassname">roachnest_helpers.</tt><tt class="descname">writereg</tt><big>(</big><em>fpga</em>, <em>name</em>, <em>value</em>, <em>base=10</em><big>)</big><a class="headerlink" href="#roachnest_helpers.writereg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a value to an FPGA register. 
+Very similar to fpga.write_int, but you can specify the base (e.g. base 2 for binary)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>fpga: katcp_wrapper.FpgaClient object</strong> :</p>
+<blockquote>
+<div><p>fpga client object (which roach board to communitcate with)</p>
+</div></blockquote>
+<p><strong>name: string</strong> :</p>
+<blockquote>
+<div><p>register name</p>
+</div></blockquote>
+<p><strong>value: integer</strong> :</p>
+<blockquote>
+<div><p>value to write to register</p>
+</div></blockquote>
+<p><strong>base: int</strong> :</p>
+<blockquote class="last">
+<div><p>base to write register. Default is 10 (decimal), but other bases may be used.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<span class="target" id="module-ping"></span><div class="section" id="ping-py">
+<h3>ping.py<a class="headerlink" href="#ping-py" title="Permalink to this headline">¶</a></h3>
+<p>Ping multiple hosts/ip addresses in parallel, using threading</p>
+<p><strong>Credits:</strong> Modified from script by Jose Porrua:
+<a class="reference external" href="http://www.joseporrua.com/2008/12/11/multi-threaded-ping-in-python">http://www.joseporrua.com/2008/12/11/multi-threaded-ping-in-python</a>
+However, this script didn&#8217;t work for me out of the box so I modified it to get it running.</p>
+<dl class="class">
+<dt id="ping.Host">
+<em class="property">class </em><tt class="descclassname">ping.</tt><tt class="descname">Host</tt><big>(</big><em>ip</em><big>)</big><a class="headerlink" href="#ping.Host" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines a host object.</p>
+<p>Current attributes include: name, address and status.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ping.execute">
+<tt class="descclassname">ping.</tt><tt class="descname">execute</tt><big>(</big><em>host</em><big>)</big><a class="headerlink" href="#ping.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes a ping command and sets the appropriate attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>host: ping.Host</strong> :</p>
+<blockquote class="last">
+<div><p>A host object.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>This is significantly different to Jose Porrua&#8217;s original script, which will not match
+ping requests on Mac OSX. TODO: Test this on Windows and modify if required.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ping.ping">
+<tt class="descclassname">ping.</tt><tt class="descname">ping</tt><big>(</big><em>hostname</em><big>)</big><a class="headerlink" href="#ping.ping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pings a single board</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>hostname: string</strong> :</p>
+<blockquote class="last">
+<div><p>hostname or IP address of hardware to ping</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ping.pingHosts">
+<tt class="descclassname">ping.</tt><tt class="descname">pingHosts</tt><big>(</big><em>hosts</em><big>)</big><a class="headerlink" href="#ping.pingHosts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and starts pinging threads.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>hosts: list []</strong> :</p>
+<blockquote class="last">
+<div><p>A list of host objects.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ping.printResults">
+<tt class="descclassname">ping.</tt><tt class="descname">printResults</tt><big>(</big><em>hosts</em><big>)</big><a class="headerlink" href="#ping.printResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a results: address  status  hostname</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>hosts: list []</strong> :</p>
+<blockquote class="last">
+<div><p>A list of ping.Host objects</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -255,8 +656,6 @@ run:</p>
 ROACH has an onboard, fully independent management subsystem that can be accessed through the Xport. 
 The X-port system monitors voltages and temperatures and will shut down the board 
 if these are out of specification. A log is kept of the shutdown cause, its value and time.</p>
-<p>This class is still under pretty heavy development so should be considered very beta and used
-at your own risk.</p>
 <dl class="class">
 <dt id="xport.Xport">
 <em class="property">class </em><tt class="descclassname">xport.</tt><tt class="descname">Xport</tt><big>(</big><em>ip</em>, <em>port</em><big>)</big><a class="headerlink" href="#xport.Xport" title="Permalink to this definition">¶</a></dt>
@@ -388,113 +787,6 @@ number is stored as class variable self.serial</p>
 </dd></dl>
 
 </div>
-<span class="target" id="module-katcp_helpers"></span><div class="section" id="katcp-helpers-py">
-<h3>katcp_helpers.py<a class="headerlink" href="#katcp-helpers-py" title="Permalink to this headline">¶</a></h3>
-<p>Created by Danny Price on 2011-01-12.</p>
-<p>Copyright (c) 2011 The University of Oxford. All rights reserved.</p>
-<p>Helper functions and classes for controlling roach boards by KATCP.</p>
-<dl class="class">
-<dt id="katcp_helpers.Pinger">
-<em class="property">class </em><tt class="descclassname">katcp_helpers.</tt><tt class="descname">Pinger</tt><big>(</big><em>ip</em><big>)</big><a class="headerlink" href="#katcp_helpers.Pinger" title="Permalink to this definition">¶</a></dt>
-<dd><p>Threaded python based ping class. Sends out pings using different threads
-and returns the response. Code from wellho.net</p>
-<p class="rubric">Methods</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="katcp_helpers.bin2dec">
-<tt class="descclassname">katcp_helpers.</tt><tt class="descname">bin2dec</tt><big>(</big><em>binary</em><big>)</big><a class="headerlink" href="#katcp_helpers.bin2dec" title="Permalink to this definition">¶</a></dt>
-<dd><p>return the decimal string representation of <em>binary</em></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="katcp_helpers.check_permissions">
-<tt class="descclassname">katcp_helpers.</tt><tt class="descname">check_permissions</tt><big>(</big><em>paths</em><big>)</big><a class="headerlink" href="#katcp_helpers.check_permissions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check file permissions</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="katcp_helpers.dec2bin">
-<tt class="descclassname">katcp_helpers.</tt><tt class="descname">dec2bin</tt><big>(</big><em>decimal</em><big>)</big><a class="headerlink" href="#katcp_helpers.dec2bin" title="Permalink to this definition">¶</a></dt>
-<dd><p>return the binary string representation of a <em>decimal</em></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="katcp_helpers.dec2hex">
-<tt class="descclassname">katcp_helpers.</tt><tt class="descname">dec2hex</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#katcp_helpers.dec2hex" title="Permalink to this definition">¶</a></dt>
-<dd><p>return the hexadecimal string representation of integer <em>n</em></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="katcp_helpers.hex2dec">
-<tt class="descclassname">katcp_helpers.</tt><tt class="descname">hex2dec</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#katcp_helpers.hex2dec" title="Permalink to this definition">¶</a></dt>
-<dd><p>return the integer value of a hexadecimal string <em>s</em></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="katcp_helpers.ping">
-<tt class="descclassname">katcp_helpers.</tt><tt class="descname">ping</tt><big>(</big><em>hostlist</em><big>)</big><a class="headerlink" href="#katcp_helpers.ping" title="Permalink to this definition">¶</a></dt>
-<dd><p>Ping a list of hosts (using the threaded Pinger class)</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="katcp_helpers.reset">
-<tt class="descclassname">katcp_helpers.</tt><tt class="descname">reset</tt><big>(</big><em>fpga</em><big>)</big><a class="headerlink" href="#katcp_helpers.reset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the sync and all counters by sending reset signals to the FPGA.
-This assumes that the relevant control registers are called:</p>
-<blockquote>
-<div><ul class="simple">
-<li><em>cnt_rst</em>: counter reset</li>
-<li><em>sync_rst</em>: sync reset</li>
-<li><em>sync_en</em>: sync enable</li>
-</ul>
-</div></blockquote>
-<p>This def returns a flashmsg, which can be displayed on a page.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="katcp_helpers.snapper">
-<tt class="descclassname">katcp_helpers.</tt><tt class="descname">snapper</tt><big>(</big><em>fpga</em>, <em>snap_id</em>, <em>bytes=4096</em>, <em>fmt='uint32'</em>, <em>byteswap=True</em><big>)</big><a class="headerlink" href="#katcp_helpers.snapper" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reads a snap block, and returns the unpacked values as an array.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>fpga: katcp_wrapper.FpgaClient()</strong> :</p>
-<blockquote>
-<div><p>The fpgaClient object from katcp_wrapper</p>
-</div></blockquote>
-<p><strong>snap_id: string</strong> :</p>
-<blockquote>
-<div><p>name of the block to snap</p>
-</div></blockquote>
-<p><strong>fmt: string (dtype)</strong> :</p>
-<blockquote>
-<div><p>unpack format to use (numpy data formats, e.g. uint32, int8)</p>
-</div></blockquote>
-<p><strong>bytes: int</strong> :</p>
-<blockquote>
-<div><p>number of bytes to read (remember, 1 byte = 8 bits)</p>
-</div></blockquote>
-<p><strong>byteswap: bool</strong> :</p>
-<blockquote class="last">
-<div><p>Defaults to true. The PowerPC has a different endianess to most architectures, and         KATCP does NOT do host-to-network bit swapping. So, the byte order generally needs 
-to be swapped.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="katcp_helpers.writereg">
-<tt class="descclassname">katcp_helpers.</tt><tt class="descname">writereg</tt><big>(</big><em>fpga</em>, <em>name</em>, <em>value</em>, <em>base=10</em><big>)</big><a class="headerlink" href="#katcp_helpers.writereg" title="Permalink to this definition">¶</a></dt>
-<dd><p>Writes a value to an FPGA register. 
-Very similar to fpga.write_int, but you can specify the base (e.g. base 2 for binary)</p>
-</dd></dl>
-
-</div>
 </div>
 </div>
 
@@ -506,16 +798,18 @@ Very similar to fpga.write_int, but you can specify the base (e.g. base 2 for bi
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">CASPERGUI Documentation</a><ul>
+<li><a class="reference internal" href="#">ROACHNEST Documentation</a><ul>
 <li><a class="reference internal" href="#copyright-licensing">Copyright &amp; Licensing</a><ul>
 </ul>
 </li>
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
-<li><a class="reference internal" href="#usage">Usage</a></li>
-<li><a class="reference internal" href="#module-caspergui">Module Listing</a><ul>
-<li><a class="reference internal" href="#caspergui-py">caspergui.py</a></li>
+<li><a class="reference internal" href="#screenshots">Screenshots</a></li>
+<li><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li><a class="reference internal" href="#module-roachnest">Module Listing</a><ul>
+<li><a class="reference internal" href="#roachnest-py">roachnest.py</a></li>
+<li><a class="reference internal" href="#roachnest-helpers-py">roachnest_helpers.py</a></li>
+<li><a class="reference internal" href="#ping-py">ping.py</a></li>
 <li><a class="reference internal" href="#xport-py">xport.py</a></li>
-<li><a class="reference internal" href="#katcp-helpers-py">katcp_helpers.py</a></li>
 </ul>
 </li>
 </ul>
@@ -556,7 +850,7 @@ Very similar to fpga.write_int, but you can specify the base (e.g. base 2 for bi
         <li class="right" >
           <a href="np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="#">CASPERGUI v1 documentation</a> &raquo;</li> 
+        <li><a href="#">ROACHNEST v1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

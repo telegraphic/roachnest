@@ -76,25 +76,117 @@
 <hr class="space" />
 
 <script type="text/javascript">
+
 // This function plots the data
 $(function () {
-    var d1 = {{[[datum[0],datum[1]] for datum in data]}}; 
-    data = [{ data: d1, color: "#003776"}]
-    $.plot($("#placeholder"), data);
+    $.ajaxSetup({ cache: false });
+    
+    // get data from bottle via JSON
+    // TODO: need to figure out how to allow async
+    var d1 = [];
+
+    $.ajax({
+      url: "/ajax_snap/{{roach['id']}}/{{snap_id}}/bytes/{{bytes}}/fmt/{{fmt}}/op/{{op}}",
+      async: false,
+      dataType: 'json',
+      success: function (json) {
+        d1 = json.data;
+      }
+    });
+    
+    var data = [{ data: d1, color: "#003776"}];
+    
+    var options = {
+        legend: { show: false },
+        series: {
+            lines: { show: true },
+            points: { show: false }
+        },
+        selection: { mode: "xy" }
+    };
+
+    // Plot inital values (nb: this line contains embedded python!)
+    var plot = $.plot($("#placeholder"), data, options);
+
+    // Enable zooming
+    $("#placeholder").bind("plotselected", function (event, ranges) {
+        // clamp the zooming to prevent eternal zoom
+        if (ranges.xaxis.to - ranges.xaxis.from < 0.00001)
+            ranges.xaxis.to = ranges.xaxis.from + 0.00001;
+        if (ranges.yaxis.to - ranges.yaxis.from < 0.00001)
+            ranges.yaxis.to = ranges.yaxis.from + 0.00001;
+        
+        // do the zooming
+        plot = $.plot($("#placeholder"), data,
+                      $.extend(true, {}, options, {
+                          xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to },
+                          yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
+                      }));
+        
+        // don't fire event on the overview to prevent eternal loop
+        overview.setSelection(ranges, true);
+    });
+
+    // add zoom out button 
+    $("input.resetPlot").click(function () {
+      $.plot($("#placeholder"), data, options);
+    });
+
+    // add AJAX refresh
+    $("input.refreshPlot").click(function () {
+      $.ajax({
+        url: "/ajax_snap/{{roach['id']}}/{{snap_id}}/bytes/{{bytes}}/fmt/{{fmt}}/op/{{op}}",
+        async: false,
+        dataType: 'json',
+        success: function (json) {
+          d1 = json.data;
+        }
+      });
+    
+      data = [{ data: d1, color: "#003776"}];      
+      $.plot($("#placeholder"), data, options);
+    });
+    
+    
+    // autorefresh functionality
+    var refresher;
+    $("input.autoRefresh").click(function () {
+      
+      // Refresh every two seconds
+      if($(".autoRefresh").is(':checked')) {
+        
+         refresher = setInterval(function() { 
+          $.ajax({
+            url: "/ajax_snap/{{roach['id']}}/{{snap_id}}/bytes/{{bytes}}/fmt/{{fmt}}/op/{{op}}",
+            async: false,
+            dataType: 'json',
+            success: function (json) {
+              d1 = json.data;
+            }
+          });
+          
+          data = [{ data: d1, color: "#003776"}];      
+          $.plot($("#placeholder"), data, options);           
+        }, 2000);
+        
+      } else {
+        // Stop refreshing
+        clearInterval(refresher);
+      }
+    });
+
 });
 </script>
 
 
 <div id="placeholder"></div>
-<p id="hoverdata"></p>
 
-<script type="text/javascript">
-$.get("/is_ajax", function(data){
-//alert("Data Loaded: " + data);
-});
-</script>
 
 <hr class="space" />
+
+<input class="resetPlot" type="button" value="Zoom out" />
+<input class="refreshPlot" type="button" value="Refresh data" />
+<p><input class="autoRefresh" type="checkbox" /> <label for="autoRefresh">Enable auto refresh</label></p>
 
 <p><a href="/listreg/{{roach["id"]}}">&laquo; Return to register listing</a></p>
 <hr class="space" />

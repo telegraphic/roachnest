@@ -7,7 +7,7 @@
 %end
 
 
-<div class="back" ><a href="/status/{{roach['id']}}">&laquo; Return to {{roach['nickname']}} overview</a> </div>
+<div class="back" ><a href="/status/{{roach['id']}}">&laquo; Return to {{roach["hostname"]}} overview</a> </div>
 <div class="forward"> <a href="/listreg/{{roach['id']}}"> List registers &raquo;</a></div>
 
 <hr class="space" />
@@ -33,7 +33,7 @@
 
 <hr class="space" />
  
-<div class="back" ><a href="/status/{{roach['id']}}">&laquo; Return to {{roach['nickname']}} overview</a> </div>
+<div class="back" ><a href="/status/{{roach['id']}}">&laquo; Return to {{roach["hostname"]}} overview</a> </div>
 <div class="forward"> <a href="/listreg/{{roach['id']}}"> List registers &raquo;</a></div>
 
 %include footer

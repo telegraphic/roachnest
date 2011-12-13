@@ -2,8 +2,6 @@
 %include header title='%s: report'%roach["hostname"]
 
 % # Setting up variables
-% chans = xinfo["channels"]
-% fans  = xinfo["fanspeeds"]
 
 %if(flashmsgs != 0 and flashmsgs != []):
 <div class="success">
@@ -13,26 +11,34 @@
 </div>
 %end
 
-<div class="span-7 colborder">
+% from lib.ping import ping
+% status = ping(roach["IP_address"])
+
+<hr class="space" />
+
+<div class="span-8 colborder">
+
+<h3>Status report: <em>{{roach["hostname"]}}</em></h3>
+
 <table>
-<thead>
-	<tr><th>{{roach["hostname"]}}</th> <th>aka <em>"{{roach["nickname"]}}"</em></th></tr>
-</thead>
 <tbody>
     <tr><td>IP Address</td> <td>{{roach["IP_address"]}}</td></tr>
+    <tr><td>XPORT Address</td> <td>{{roach["XPORT_address"]}}</td></tr>
     <tr><td>MAC Address</td> <td>{{roach["MAC_address"]}}</td></tr>
     <tr><td>Type</td>		<td>{{roach["type"]}}</td></tr>
     <tr><td>Serial</td> 	<td>{{roach["serial"]}}</td></tr>
     <tr><td>Firmware</td> 	<td>{{roach["firmware"]}}</td></tr>
     <tr><td>Location</td>  	<td>{{roach["location"]}}</td></tr>
+    <tr><td>ZDOK0</td>  	<td>{{roach["ZDOK0"]}}</td></tr>
+    <tr><td>ZDOK1</td>  	<td>{{roach["ZDOK1"]}}</td></tr>
 </tbody>
 </table>
 
-  <p><a href="/edit/{{roach["id"]}}" title="Edit entry"><span class="ss_sprite ss_table_edit"> &nbsp; </span> Edit info </a></p>
+<p><label>Notes:</label> {{roach["notes"]}}</p>
 
-<br>
-  
+
 <h4>Xport information</h4>
+%if(xinfo != 0):
 <table>
   <tbody>
     <tr><td>Serial</td> <td>{{xinfo["serial"]}}     </td></tr>  
@@ -49,14 +55,24 @@
  </td></tr>
   </tbody>
 </table>
+%else:
+<p><em>Xport is not connected.</em></p>
+%end
+
+
+
+
+<div class="back"><a href="/">&laquo; Return to overview</a></div>
    
 </div>
 
-<div class="span-8 colborder">
+<div class="span-9 colborder">
 <h4>Operating temperature / voltages</h4>
+%if(xinfo != 0):
+%  chans = xinfo["channels"]
 <table>
-  %for chan in chans:
-  %  width = int( (float(chan[1])-float(chan[2])) / (float(chan[3])-float(chan[2])) * 100)
+  %  for chan in chans:
+  %    width = int( (float(chan[1])-float(chan[2])) / (float(chan[3])-float(chan[2])) * 100)
 	<tr>
 		<td><label>{{chan[0]}}</label></td>
 		<td>{{str("%.1f")%chan[2]}}</td> 
@@ -67,15 +83,15 @@
 		</td>
 		<td>{{str("%.1f")%chan[3]}}</td>
 	</tr>
-	%end
-</table>
-
-
-</div>
-
-<div class="span-7 last">
+  %end
+</table>  
+%else:
+<p><em>Not available</em></p>
+%end
 
 <h4>Fan Speeds</h4>
+%if(xinfo != 0):
+% fans  = xinfo["fanspeeds"]
 <table>
 	<tr><td><label>Fan 1:</label> </td>
 	<td>{{fans[0]}}</td></tr>
@@ -84,20 +100,98 @@
 	<tr><td><label>Fan 3:</label> </td>
 	<td>{{fans[2]}}</td></tr>
 </table>
+%else:
+<p><em>Not available</em></p>
+%end
 
-<h4>Actions</h4>
-<ul>
-	<li><a href="/listbof/{{roach["id"]}}">Reprogram FPGA</a></li>
-	<li><a href="/listreg/{{roach["id"]}}">List registers</a></li>
-	<li><a href="/poweron/{{roach["id"]}}">Power ON</a></li>
-	<li><a href="/poweroff/{{roach["id"]}}">Power OFF</a></li>
-	<li><a href="/status/{{roach["id"]}}">Refresh</a></li>
-</ul>
-</li>
 </div>
 
-<hr class="space">
+<div class="span-5 last">
 
-<a href="/">&laquo; Return to overview</a>
+<h4>Actions</h4>
+<ul class="ss_list">
+	<li><span class="ss_sprite ss_disk_multiple"> &nbsp; </span>
+	    %if(status):
+	    <a href="/listbof/{{roach["id"]}}">Reprogram FPGA</a>
+	    %else:
+	    Reprogram FPGA
+	    %end
+	</li>
+	<li>
+	  <span class="ss_sprite ss_zoom"> &nbsp; </span>
+	  %if(status):
+	  <a href="/listreg/{{roach["id"]}}">List registers</a>
+	  %else:
+	  List registers
+	  %end
+	</li>
+	%if(xinfo !=0):
+	<li>
+	  <span class="ss_sprite ss_control_play_blue"> &nbsp; </span>
+	  %if(xinfo["powerstate"] == "Power state: 4 (Powered off)"):
+	  <a href="/poweron/{{roach["id"]}}">Power ON</a>
+	  %else:
+	  <em>Power ON</em>
+	  %end
+	</li>
+	<li>
+	  <span class="ss_sprite ss_control_stop_blue"> &nbsp; </span>
+	  %if(xinfo["powerstate"] == "Power state: 3 (Powered on)"):
+	  <a href="/poweroff/{{roach["id"]}}">Power OFF</a>
+	  %else:
+	  <em>Power OFF</em>
+	  %end	  
+	</li>
+  %end
+</ul>
+
+<h4>Manage entry</h4>
+
+<script type="text/javascript">
+  //quick anti-fumble delete test
+$(function () {
+  $("#delete").click(function () {
+    var c = confirm("Are you sure you want to delete {{roach['hostname']}}");
+    if(c==true) {
+      window.location = "/delete/{{roach['id']}}"
+    } else {
+      return 0
+    }
+  });
+});      
+</script>
+<ul class="ss_list">
+  <li>
+    <span class="ss_sprite ss_table_edit"> &nbsp; </span>  
+    <a href="/edit/{{roach["id"]}}" title="Edit entry">Edit info</a>
+  </li>
+  <li>
+    <span class="ss_sprite ss_table_delete"> &nbsp; </span> 
+    <a id="delete" href="#">Delete</a>
+  </li>
+</ul>
+
+<h4>Navigation</h4>
+<ul class="ss_list">
+	<li>
+	  <span class="ss_sprite ss_arrow_refresh"> &nbsp; </span>
+	  <a href="/status/{{roach["id"]}}">Refresh</a>
+	</li>
+	<li>
+	  <span class="ss_sprite ss_arrow_left"> &nbsp; </span>
+	  <a href="/">Return to overview</a>
+	</li>
+</ul>
+
+
+</div>
+
+
+
+<hr class="space" />
+
+
+
+<hr class="space" />
 
 %include footer

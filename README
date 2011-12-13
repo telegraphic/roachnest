@@ -1,8 +1,21 @@
 ROACHNEST
 ---------
 
-ROACHNEST is a browser based Graphical User Interface (GUI) for control of CASPER hardware.
-It uses bottle.py to serve up web pages, and KATCP to talk to the hardware.
+Author: Danny Price
+Homepage: http://telegraphic.github.com/roachnest/
+Version: 1.0
+License: GNU GPL
 
-This is still under heavy development. Use at your own risk, and be aware that I've done no 
-security checking (so don't run this on the world wide web unless you're crazy).
+Roachnest is a browser based Graphical User Interface (GUI) for control of CASPER hardware.
+This script utilises the KATCP python libraries, the bottle web framework, and sqlite3:
+
+   * http://casper.berkeley.edu/wiki/KATCP
+   * http://bottle.paws.de/
+   * http://docs.python.org/library/sqlite3.html
+
+The HTML/CSS is based on blueprint CSS web framework, and plotting is done with HTML5/javascript flot:
+
+   * http://www.blueprintcss.org/
+   * http://code.google.com/p/flot/
+
+Please send any queries, comments, or ideas to *danny dot price at astro dot ox dot ac dot uk*.

@@ -6,9 +6,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>{{config.title}} | {{title}}</title>
+    
+    <link rel="shortcut icon" type="image/x-icon" href="{{config.favicon}}">
 
-  <link rel="shortcut icon" type="image/x-icon" href="{{config.favicon}}">
-  
 	<!-- CASPER GUI CSS -->
 	<link rel="stylesheet" href="/files/styles.css" type="text/css" media="screen, projection">
 	<link rel="stylesheet" href="{{config.branding_css}}" type="text/css" media="screen, projection">
@@ -29,8 +29,7 @@
       <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/files/flot/excanvas.min.js"></script><![endif]-->
       <script language="javascript" type="text/javascript" src="/files/flot/jquery.js"></script>
       <script language="javascript" type="text/javascript" src="/files/flot/jquery.flot.js"></script>
-      <script language="javascript" type="text/javascript" src="/files/flot/jquery.flot.navigate.js"></script>
-      <script language="javascript" type="text/javascript" src="/files/flot/jquery.flot.crosshair.js"></script>
+      <script language="javascript" type="text/javascript" src="/files/flot/jquery.flot.selection.js"></script>
   
   <hr class="space" />
     <div class="container">

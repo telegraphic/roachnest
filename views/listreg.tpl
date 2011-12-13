@@ -76,28 +76,19 @@
         <td>Value: </td>
         <td><input type="text" class="spectrometer_reg" name="regval" /></td>
     </tr>
-        
+    <tr><td><input type="radio" name="regtype" checked="checked" value="10" /><label>Dec </label> </td>
+        <td><input type="radio" name="regtype" value="2" /> <label>Bin  </label>                  </td></tr>
+    <tr><td><input type="radio" name="regtype" value="16" /> <label>Hex  </label>                 </td>
+        <td><input type="radio" name="regtype" value="eval" /> <label>Eval </label>               </td></tr>
+    </tr>
+</tbody>        
 </table>
-
-<div>
-        Dec <input type="radio" name="regtype" checked="checked" value="10" />
-        Bin <input type="radio" name="regtype" value="2" />
-        Hex <input type="radio" name="regtype" value="16" />
-        Eval <input type="radio" name="regtype" value="eval" />
-</div>           
 <input type="submit" value="Write &raquo;" name="submit" />
 </form>
 
 <hr class="space">
-
-<h3> Reset / resync</h3>
-<form name="writereg" action="/listreg/{{roach['id']}}" method="GET">
-<input type="submit" value="Reset &raquo;" name="reset" />
-</form>
-
-<hr class="space">
-
 <h3> <a href="/listreg/{{roach['id']}}"> Refresh </a></h3>
+</div>       
 
 <hr class="space">
 

@@ -1,13 +1,20 @@
 #/usr/bin/env python
  
 """
-ping.py -- Ping multiple hosts/ipaddresses in parallel.
+ping.py
+=======
 
-Modified from script by Jose Porrua:
+Ping multiple hosts/ip addresses in parallel, using threading
+
+**Credits:** Modified from script by Jose Porrua:
 http://www.joseporrua.com/2008/12/11/multi-threaded-ping-in-python
-
-This script didn't work out of the box so I modified it to get it running.
+However, this script didn't work for me out of the box so I modified it to get it running.
 """
+
+# Python metadata
+__author__    = "Danny Price"
+__license__   = "GNU GPL"
+__version__   = "1.0"
  
 import re, sys
 import threading
@@ -18,19 +25,21 @@ COUNT = 2
 TIMEOUT = 1
  
 class Host(object):
-    """
-    Defines a host object. Current attributes include: name,
-    address and status.
+    """ Defines a host object. 
+    
+    Current attributes include: name, address and status.
     """
     def __init__ (self, ip):
         self.ip = ip
         self.status = 0
  
 def pingHosts(hosts):
-    """
-    Creates and starts pinging threads. Displays results upon
-    completion.
-    Parameters: A list of host objects.
+    """  Creates and starts pinging threads.
+    
+    Parameters
+    ----------
+    hosts: list []
+      A list of host objects.
     """
     threads = []
     nloops = range(len(hosts))
@@ -52,12 +61,29 @@ def pingHosts(hosts):
     printResults(hosts)
     
     return hosts
+
+def ping(hostname):
+  """ Pings a single board
+  
+  Parameters
+  ----------
+  hostname: string
+    hostname or IP address of hardware to ping
+  """
+  return pingHosts([ Host(hostname)])[0].status
  
 def execute(host):
-    """
-    Executes a ping command and sets the appropriate attribute.
-    Parameters: A host object.
-    Notes: This is significantly different to Jose Porrua's original script.
+    """ Executes a ping command and sets the appropriate attribute.
+    
+    Parameters
+    ----------
+    host: ping.Host
+      A host object.
+    
+    Notes
+    -----
+    This is significantly different to Jose Porrua's original script, which will not match
+    ping requests on Mac OSX. TODO: Test this on Windows and modify if required.
     """
     
     # Ping differs slightly on Mac and Linux. So, we need a conditional to check.
@@ -87,21 +113,24 @@ def execute(host):
       status = int(status[0])   
     
     host.status = status
-
  
 def printResults(hosts):
-    """
-    Prints a results: address  status  hostname
-    Parameters: A list of host objects
+    """  Prints a results: address  status  hostname
+    
+    Parameters
+    ----------
+    hosts: list []
+      A list of ping.Host objects
     """
     print
     for host in hosts:
         print "%s: %i" % (host.ip, host.status)
+
+#####################
+##   MAIN METHOD   ##
+#####################
  
 if __name__ == '__main__':
-    """
-    Main method.
-    """
     hosts = []
  
     # A list of addresses. Ideally, these will come from a config file.

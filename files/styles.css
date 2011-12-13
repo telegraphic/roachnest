@@ -66,6 +66,44 @@ div.read_int {
 
 }
 
+#navigation {
+  margin: 0 auto;
+  width: 360px;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+#navigation .button {
+  width: 70px;
+  height: 80px;
+  padding: 5px;
+  float: left;
+}
+
+#navigation .button a {
+   color: #666;
+   text-decoration: none;
+}
+
+#navigation .button:hover {
+  background-color: #e5ecf9;
+}
+
+.db_nav {
+  text-align: right;
+}
+
+a span.ss_sprite {
+ text-decoration: none;
+}
+
+.ss_list{
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  padding-bottom: 20px;
+}
+
 /* Pure CSS tooltips - http://psacake.com/web/jl.asp */
 
 a.tip{
